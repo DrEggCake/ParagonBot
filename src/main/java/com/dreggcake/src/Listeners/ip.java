@@ -14,7 +14,7 @@ public class ip extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String msg = event.getMessage().getContentRaw();
-        if(msg.equalsIgnoreCase("!ip")){
+        if(msg.equalsIgnoreCase("!ip") || msg.equalsIgnoreCase("ip?")){
             sendip(event.getMessage(), event);
         }
     }
