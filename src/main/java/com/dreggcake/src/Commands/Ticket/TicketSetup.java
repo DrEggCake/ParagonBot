@@ -6,6 +6,7 @@ package com.dreggcake.src.Commands.Ticket;
 import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.entities.Member;
@@ -42,10 +43,10 @@ public class TicketSetup
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         Member member = event.getMember();
-        if (member.getRoles().isEmpty()) return;
-        if(!(member.getRoles().contains(Utilities.JR_ADMIN_ROLE) || member.getRoles().stream().anyMatch(role -> role.equals(Utilities.JR_ADMIN_ROLE) || role.getPosition()>= Utilities.JR_ADMIN_ROLE.getPosition()) )){
-            event.reply("You do not have permission to use this command.").setEphemeral(true).queue();
+        if(!member.hasPermission(Permission.ADMINISTRATOR)){
+            event.reply("Lol").setEphemeral(true).queue();
         }
+
         String channelId = event.getOption("channel") == null ? event.getChannelId() : event.getOption("channel").getAsString();
         TextChannel channel = event.getJDA().getTextChannelById(channelId);
         if (channel == null) {
@@ -53,7 +54,7 @@ public class TicketSetup
             return;
         }
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setTitle("# :tickets: Support Tickets");
+        embed.setTitle(":tickets: Support Tickets");
         embed.setDescription("Welcome to the Official Support Center of **Paragon Network**\n" +
                 "Please open a ticket by clicking the button below!\n\n" +
                 "### :warning: PLEASE NOTE: \n" +

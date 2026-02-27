@@ -48,7 +48,10 @@ public class UnbanForce implements ICommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         Member member = event.getMember();
-        if (!hasPermission(member)) return;
+        if (!hasPermission(member)) {
+            event.reply("Nah I refuse").setEphemeral(true).queue();
+            return;
+        };
 
         Guild guild = event.getGuild();
 

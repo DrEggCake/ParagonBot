@@ -48,7 +48,7 @@ public class Unmute
 
 
         if (!executer.getRoles().stream().anyMatch(role -> role.equals(Utilities.SR_MOD_ROLE) || role.getPosition() > Utilities.SR_MOD_ROLE.getPosition())) {
-            event.reply("You don't have necessary permissions.").queue();
+            event.reply("You don't have necessary permissions.").setEphemeral(true).queue();
             return;
         }
         try {
