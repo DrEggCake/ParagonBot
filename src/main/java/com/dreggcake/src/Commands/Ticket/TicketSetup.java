@@ -45,6 +45,7 @@ public class TicketSetup
         Member member = event.getMember();
         if(!member.hasPermission(Permission.ADMINISTRATOR)){
             event.reply("Lol").setEphemeral(true).queue();
+            return;
         }
 
         String channelId = event.getOption("channel") == null ? event.getChannelId() : event.getOption("channel").getAsString();
