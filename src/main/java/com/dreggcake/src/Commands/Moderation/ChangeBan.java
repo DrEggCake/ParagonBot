@@ -71,11 +71,28 @@ public class ChangeBan implements ICommand {
                     updateStmt.executeUpdate();
                 }
 
-                // Retrieve user info for thumbnail safely
                 event.getJDA().retrieveUserById(bannedUserId).queue(
-                        user -> sendBanEmbed(event, executer, user, oldDurationMillis, newDurationMillis, changeReason),
-                        failure -> sendBanEmbed(event, executer, null, oldDurationMillis, newDurationMillis, changeReason)
+                        user -> {
+                            EmbedBuilder embed = generateBanEmbed(event, executer, user, oldDurationMillis, newDurationMillis, changeReason);
+
+                            event.replyEmbeds(embed.build()).queue();
+
+                            // Send to another channel (example)
+                            Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                                    .sendMessageEmbeds(embed.build())
+                                    .queue();
+                        },
+                        failure -> {
+                            EmbedBuilder embed = generateBanEmbed(event, executer, null, oldDurationMillis, newDurationMillis, changeReason);
+
+                            event.replyEmbeds(embed.build()).queue();
+
+                            Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                                    .sendMessageEmbeds(embed.build())
+                                    .queue();
+                        }
                 );
+
 
             }
         } catch (SQLException e) {
@@ -84,7 +101,7 @@ public class ChangeBan implements ICommand {
         }
     }
 
-    private void sendBanEmbed(SlashCommandInteractionEvent event, Member executer, User bannedUser, long oldMillis, long newMillis, String reason) {
+    private EmbedBuilder generateBanEmbed(SlashCommandInteractionEvent event, Member executer, User bannedUser, long oldMillis, long newMillis, String reason) {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Ban Updated")
                 .setColor(Color.ORANGE)
@@ -98,7 +115,7 @@ public class ChangeBan implements ICommand {
         embed.addField("New Ban Duration", formatTimestamp(newMillis), true);
         embed.addField("Time Remaining", formatTimeRemaining(newMillis), false);
 
-        event.replyEmbeds(embed.build()).queue();
+        return embed;
     }
 
     private long parseTimeToMillis(String str) {
