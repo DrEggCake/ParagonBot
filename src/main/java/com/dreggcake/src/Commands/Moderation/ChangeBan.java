@@ -77,7 +77,7 @@ public class ChangeBan implements ICommand {
 
                             event.replyEmbeds(embed.build()).queue();
 
-                            // Send to another channel (example)
+
                             Utilities.PUNISHMENT_LOG_CHANNEL_ID
                                     .sendMessageEmbeds(embed.build())
                                     .queue();
