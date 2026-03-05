@@ -86,7 +86,7 @@ public class Unmute
                     stmt.close();
                 } else {
                     event.reply("User is not muted or does not exist").setEphemeral(true).queue();
-                    event.getGuild().removeRoleFromMember(muted, Utilities.MUTED_ROLE).queue();
+                    return;
                 }
                 pstmt.close();
                 rs.close();
