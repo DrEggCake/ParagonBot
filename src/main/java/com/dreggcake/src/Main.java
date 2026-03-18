@@ -18,7 +18,7 @@ import com.dreggcake.src.Counting.CountingListener;
 import com.dreggcake.src.Listeners.*;
 import com.dreggcake.src.Listeners.Logs.TestLogging;
 import com.dreggcake.src.Listeners.ReloadCommand.ConfigReload;
-import com.dreggcake.src.StaffList.StaffRoleUpdateListener;
+import com.dreggcake.src.StaffList.StaffListRefresh;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -70,7 +70,7 @@ public class Main {
         jda.addEventListener(new SpamListener());
         jda.addEventListener(new SwearListener());
         jda.addEventListener(new AutoDeleteListener());
-        jda.addEventListener(new StaffRoleUpdateListener());
+//        jda.addEventListener(new StaffRoleUpdateListener());
         jda.addEventListener(new TestLogging());
         jda.addEventListener(new ConfigReload());
 
@@ -87,25 +87,6 @@ public class Main {
         manager.add(new StaffListCreateCommand());
         manager.add(new UnbanForce());
         jda.addEventListener(manager);
-
-        InviteTracker inviteTracker = new InviteTracker();
-
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        Runnable autoUnban = new autoUnban();
-        Runnable autoUnmute = new autoUnmute();
-        Runnable databaseBackup = new databaseBackup();
-        Runnable autoUnblacklistTicket = new autoUnblacklistTicket();
-        Runnable inviteRefresh = new InviteCache(inviteTracker);
-        Runnable countingDatabaseBackup = new CountingDatabaseBackup();
-
-        scheduler.scheduleWithFixedDelay(autoUnban, 10, 10, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(autoUnmute, 10, 10, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(databaseBackup, 10, 3600, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(countingDatabaseBackup, 10, 3600, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(autoUnblacklistTicket, 10, 10, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(inviteRefresh, 10, 10, TimeUnit.SECONDS);
-        scheduler.scheduleAtFixedRate(new ActivityChanger(), 0L, 5L, TimeUnit.SECONDS);
-
     }
 
     static class ActivityChanger implements Runnable {
