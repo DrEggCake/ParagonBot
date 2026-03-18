@@ -31,6 +31,10 @@ public class Utilities {
 
     public static Role SURVIVAL_ROLE;
     public static Role LIFESTEAL_ROLE;
+    public static Role EARTH_ROLE;
+    public static Role PRISON_ROLE;
+    public static Role COBBLEMON_ROLE;
+    public static Role MINIGAMES_ROLE;
 
     // ================== Channels ==================
     public static TextChannel PUNISHMENT_LOG_CHANNEL_ID;
@@ -86,6 +90,10 @@ public class Utilities {
 
         SURVIVAL_ROLE = getRole("gamemodeRoleID.survivalRoleID");
         LIFESTEAL_ROLE = getRole("gamemodeRoleID.lifestealRoleID");
+        EARTH_ROLE = getRole("gamemodeRoleID.earthRoleID");
+        PRISON_ROLE = getRole("gamemodeRoleID.prisonRoleID");
+        COBBLEMON_ROLE = getRole("gamemodeRoleID.cobblemonRoleID");
+        MINIGAMES_ROLE = getRole("gamemodeRoleID.minigamesRoleID");
 
         PUNISHMENT_LOG_CHANNEL_ID = getTextChannel("ChannelsID.punishmentLogID");
         MEMBER_LOG_CHANNEL_ID = getTextChannel("ChannelsID.memberLogID");

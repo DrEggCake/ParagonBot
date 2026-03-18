@@ -24,7 +24,6 @@ public class StaffRole {
     );
 
     public List<Role> getUniversalRole() {
-
         return universalRole;
     }
 

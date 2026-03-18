@@ -25,7 +25,20 @@ public class StaffMessageBuilder {
         components.add(Separator.createInvisible(Separator.Spacing.SMALL));
         components.addAll(buildGamemodeStaff(guild, "## **Survival Staff**", Utilities.SURVIVAL_ROLE));
         components.add(Separator.createInvisible(Separator.Spacing.SMALL));
+
         components.addAll(buildGamemodeStaff(guild, "## **Lifesteal Staff**", Utilities.LIFESTEAL_ROLE));
+        components.add(Separator.createInvisible(Separator.Spacing.SMALL));
+
+        components.addAll(buildGamemodeStaff(guild, "## **Earth Staff**", Utilities.EARTH_ROLE));
+        components.add(Separator.createInvisible(Separator.Spacing.SMALL));
+
+        components.addAll(buildGamemodeStaff(guild, "## **Prison Staff**", Utilities.PRISON_ROLE));
+        components.add(Separator.createInvisible(Separator.Spacing.SMALL));
+
+        components.addAll(buildGamemodeStaff(guild, "## **Cobblemon Staff**", Utilities.COBBLEMON_ROLE));
+        components.add(Separator.createInvisible(Separator.Spacing.SMALL));
+
+        components.addAll(buildGamemodeStaff(guild, "## **Minigames Staff**", Utilities.MINIGAMES_ROLE));
         components.add(Separator.createDivider(Separator.Spacing.LARGE));
         components.add(
                 ActionRow.of(
