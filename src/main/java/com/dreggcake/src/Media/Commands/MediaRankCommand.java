@@ -4,12 +4,14 @@ import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Media.Logic.MediaDAO;
 import com.dreggcake.src.Media.MediaPermissions;
 import com.dreggcake.src.Utilities;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
+import java.awt.*;
 import java.util.List;
 
 public class MediaRankCommand implements ICommand {
@@ -96,7 +98,7 @@ public class MediaRankCommand implements ICommand {
             return;
         }
 
-        if(MediaDAO.isMember(target)) {
+        if (MediaDAO.isMember(target)) {
             MediaDAO.removeMemberRank(target);
         }
         if (target.getRoles().contains(role)) {
@@ -104,6 +106,12 @@ public class MediaRankCommand implements ICommand {
         }
 
         event.reply("Member removed from Databass").queue();
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setTitle("Media Rank Removed");
+        embed.addField("Staff", event.getMember().getAsMention(), true);
+        embed.addField("Target", target.getAsMention(), true);
+        embed.setColor(Color.RED);
+        Utilities.COMMAND_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
 
     }
 
@@ -124,6 +132,13 @@ public class MediaRankCommand implements ICommand {
         event.getGuild().addRoleToMember(target, role).queue();
 
         event.reply("Added " + target.getAsMention() + " to media rank database").queue();
+
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setTitle("Media Rank Added");
+        embed.addField("Staff", event.getMember().getAsMention(), true);
+        embed.addField("Target", target.getAsMention(), true);
+        embed.setColor(Color.BLUE);
+        Utilities.COMMAND_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
     }
 
     private long parseTimeToSeconds(String time) {
