@@ -17,6 +17,7 @@ public class StaffListBuild {
 
     private final StaffRoles staffRoles = new StaffRoles();
     private final List<Member> staffMembers = new ArrayList<>();
+    private final List<Member> usedMember = new ArrayList<>();
 
     public List<MessageCreateBuilder> buildList() {
         retrieveStaffMembers();
@@ -55,7 +56,9 @@ public class StaffListBuild {
             section.append("### ").append(role.getAsMention()).append("\n");
 
             for (Member member : members) {
+                if(usedMember.contains(member)) continue;
                 section.append("➜ ").append(member.getAsMention()).append("\n");
+                usedMember.add(member);
             }
 
             components.add(TextDisplay.of(section.toString()));
@@ -74,7 +77,7 @@ public class StaffListBuild {
 
             List<ContainerChildComponent> components = new ArrayList<>();
 
-            String title = "## " + gamemode.getName() + " Staff";
+            String title = "## " + gamemode.getName();
             components.add(TextDisplay.of(title));
 
             boolean hasStaff = false;
@@ -91,7 +94,9 @@ public class StaffListBuild {
                 section.append("### ").append(staffRole.getAsMention()).append("\n");
 
                 for (Member member : members) {
+                    if(usedMember.contains(member)) continue;
                     section.append("➜ ").append(member.getAsMention()).append("\n");
+                    usedMember.add(member);
                 }
 
                 components.add(TextDisplay.of(section.toString()));
@@ -137,13 +142,10 @@ public class StaffListBuild {
 
             List<Role> roles = member.getRoles();
 
-            // Must have staff role
             if (!roles.contains(staffRole)) continue;
 
-            // Must NOT be universal (important)
             if (hasAnyRole(member, staffRoles.getUniversalStaffRoles())) continue;
 
-            // Must match gamemode
             if (roles.contains(gamemode)) {
                 result.add(member);
             }
