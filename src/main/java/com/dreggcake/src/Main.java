@@ -45,7 +45,6 @@ public class Main {
                 create(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES).setToken(Config.getString("bot.id", "")).build();
         jda.addEventListener(new onReady());
         jda.addEventListener(new Welcome());
-        jda.addEventListener(new onSqlReady());
         jda.addEventListener(new TicketCreate());
         jda.addEventListener(new TicketCloseListen());
         jda.addEventListener(new Logging());
