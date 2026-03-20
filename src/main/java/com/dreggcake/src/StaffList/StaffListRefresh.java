@@ -37,7 +37,7 @@ public class StaffListRefresh implements Runnable {
 
                 // Edit existing message
                 retrievedHistory.get(i)
-                        .editMessageComponents(staffList.get(i).getComponents())
+                        .editMessageComponents(staffList.get(i).getComponents()).useComponentsV2()
                         .queue();
             }
         });
