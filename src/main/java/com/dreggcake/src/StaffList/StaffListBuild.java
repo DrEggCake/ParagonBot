@@ -5,11 +5,13 @@ import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.components.container.Container;
 import net.dv8tion.jda.api.components.container.ContainerChildComponent;
+import net.dv8tion.jda.api.components.separator.Separator;
 import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,8 @@ public class StaffListBuild {
 
     private MessageCreateBuilder buildApplyStaffMessage() {
         Container container = Container.of(
-                ActionRow.of(Button.link("https://docs.google.com/forms/d/e/1FAIpQLSdrt6O0➜xu➜M0t6j7XjCY2QbORAVmViJmN816uUWJXpGA3Bqg/viewform", "Apply for Staff"))
+                TextDisplay.of("-# Interested in becoming part of our Staff Team? Click the button below to apply"),
+                ActionRow.of(Button.link("https://forms.gle/kLN4kk4oYATqjhae7", "Apply for Staff"))
         );
         return new MessageCreateBuilder()
                 .useComponentsV2()
@@ -44,7 +47,8 @@ public class StaffListBuild {
 
         List<ContainerChildComponent> components = new ArrayList<>();
 
-        components.add(TextDisplay.of("## Paragon Network Staff Team"));
+        components.add(TextDisplay.of("# Paragon Network Staff Team"));
+        components.add(Separator.createDivider(Separator.Spacing.LARGE));
 
         for (Role role : staffRoles.getUniversalStaffRoles()) {
 
@@ -56,17 +60,18 @@ public class StaffListBuild {
             section.append("### ").append(role.getAsMention()).append("\n");
 
             for (Member member : members) {
-                if(usedMember.contains(member)) continue;
+                if (usedMember.contains(member)) continue;
                 section.append("➜ ").append(member.getAsMention()).append("\n");
                 usedMember.add(member);
             }
 
-            components.add(TextDisplay.of(section.toString()));
+            components.add(TextDisplay.of(section + "\n"));
         }
+        components.add(Separator.createDivider(Separator.Spacing.SMALL));
 
         return new MessageCreateBuilder()
                 .useComponentsV2(true)
-                .setComponents(Container.of(components));
+                .setComponents(Container.of(components).withAccentColor(Color.ORANGE));
     }
 
     private List<MessageCreateBuilder> buildGamemodeMessages() {
@@ -79,6 +84,7 @@ public class StaffListBuild {
 
             String title = "## " + gamemode.getName();
             components.add(TextDisplay.of(title));
+            components.add(Separator.createDivider(Separator.Spacing.SMALL));
 
             boolean hasStaff = false;
 
@@ -94,12 +100,12 @@ public class StaffListBuild {
                 section.append("### ").append(staffRole.getAsMention()).append("\n");
 
                 for (Member member : members) {
-                    if(usedMember.contains(member)) continue;
+                    if (usedMember.contains(member)) continue;
                     section.append("➜ ").append(member.getAsMention()).append("\n");
                     usedMember.add(member);
                 }
 
-                components.add(TextDisplay.of(section.toString()));
+                components.add(TextDisplay.of(section + "\n"));
             }
 
             if (!hasStaff) continue;
@@ -107,7 +113,7 @@ public class StaffListBuild {
             messages.add(
                     new MessageCreateBuilder()
                             .useComponentsV2(true)
-                            .setComponents(Container.of(components))
+                            .setComponents(Container.of(components).withAccentColor(Color.BLUE))
             );
         }
 
