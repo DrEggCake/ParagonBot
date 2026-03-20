@@ -36,6 +36,7 @@ public class StaffListBuild {
     private MessageCreateBuilder buildApplyStaffMessage() {
         Container container = Container.of(
                 TextDisplay.of("-# Interested in becoming part of our Staff Team? Click the button below to apply"),
+                Separator.createDivider(Separator.Spacing.SMALL),
                 ActionRow.of(Button.link("https://forms.gle/kLN4kk4oYATqjhae7", "Apply for Staff"))
         );
         return new MessageCreateBuilder()
