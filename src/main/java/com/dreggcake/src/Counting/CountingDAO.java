@@ -36,7 +36,7 @@ public class CountingDAO {
 
     public void save(CountingState state) {
         try {
-            Databases.getMainDatabase().update("""
+            Databases.getCountingDatabase().update("""
                 INSERT INTO counting_channels
                 (channel_id, current_number, last_user_id, contributions)
                 VALUES (?, ?, ?, ?)
@@ -57,7 +57,7 @@ public class CountingDAO {
 
     public Map<Long, CountingState> loadAll() {
         try {
-            return Databases.getMainDatabase().query(
+            return Databases.getCountingDatabase().query(
                     "SELECT * FROM counting_channels",
                     rs -> {
                         Map<Long, CountingState> map = new HashMap<>();

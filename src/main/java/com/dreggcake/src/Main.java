@@ -14,8 +14,6 @@ import com.dreggcake.src.Commands.Ticket.TicketSetup;
 import com.dreggcake.src.Config.Config;
 import com.dreggcake.src.Counting.CountingCommandsListener;
 import com.dreggcake.src.Counting.CountingListener;
-import com.dreggcake.src.Database.DAO;
-import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Listeners.*;
 import com.dreggcake.src.Listeners.Logs.TestLogging;
 import com.dreggcake.src.Listeners.ReloadCommand.ConfigReload;
@@ -30,7 +28,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class Main {
 
