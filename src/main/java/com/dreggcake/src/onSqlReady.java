@@ -105,7 +105,6 @@ public class onSqlReady extends ListenerAdapter {
                         id INTEGER PRIMARY KEY,
                         userid INTEGER NOT NULL,
                         reason TEXT NOT NULL,
-                        duration INTEGER NOT NULL,
                         staffid INTEGER NOT NULL
                     )
                 """;

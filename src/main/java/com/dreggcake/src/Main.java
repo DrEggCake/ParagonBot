@@ -19,6 +19,10 @@ import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Listeners.*;
 import com.dreggcake.src.Listeners.Logs.TestLogging;
 import com.dreggcake.src.Listeners.ReloadCommand.ConfigReload;
+import com.dreggcake.src.Media.Commands.MediaBlacklistCommand;
+import com.dreggcake.src.Media.Commands.MediaRankCommand;
+import com.dreggcake.src.Media.Commands.MediaUnblacklistCommand;
+import com.dreggcake.src.Media.Commands.MediaUploadCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -74,6 +78,12 @@ public class Main {
         manager.add(new InfoEmbedCommand());
         manager.add(new StaffListCreateCommand());
         manager.add(new UnbanForce());
+
+        manager.add(new MediaRankCommand());
+        manager.add(new MediaUploadCommand());
+        manager.add(new MediaBlacklistCommand());
+        manager.add(new MediaUnblacklistCommand());
+
         jda.addEventListener(manager);
     }
 

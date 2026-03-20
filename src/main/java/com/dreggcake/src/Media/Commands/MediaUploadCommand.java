@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
-import javax.lang.model.type.UnionType;
 import java.util.List;
 
 public class MediaUploadCommand implements ICommand {

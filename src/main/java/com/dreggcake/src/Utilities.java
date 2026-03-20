@@ -35,6 +35,7 @@ public class Utilities {
 
     public static Role TICKET_BLACKLIST_ROLE;
     public static Role MUTED_ROLE;
+    public static Role MEDIA_BACKLIST_ROLE;
 
     public static Role SURVIVAL_ROLE;
     public static Role LIFESTEAL_ROLE;
