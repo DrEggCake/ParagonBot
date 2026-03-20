@@ -10,6 +10,5 @@ public class CountingCommandsListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         commands.handle(event);
-
     }
 }

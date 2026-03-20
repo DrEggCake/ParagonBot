@@ -3,6 +3,7 @@
  */
 package com.dreggcake.src;
 
+import com.dreggcake.src.Database.Databases;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -13,8 +14,19 @@ public class onSqlReady extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
-//        TextChannel channel = event.getJDA().getTextChannelById("1251202767893037056");
-//        channel.sendMessage("Restarted and ready to go").queue(msg -> msg.delete().queueAfter(100, TimeUnit.SECONDS));
+        try {
+            createMainDatabase();
+            createCountingDatabase();
+            createMediaDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void createMainDatabase() throws SQLException {
+        Databases.getMainDatabase().init();
+
         String createSqlmute = "CREATE TABLE IF NOT EXISTS mutes (id INTEGER PRIMARY KEY, userid text NOT NULL, reason TEXT NOT NULL, duration text NOT NULL, staffid text NOT NULL)";
         String createSqlban = "CREATE TABLE IF NOT EXISTS bans(id INTEGER PRIMARY KEY, userid TEXT NOT NULL, reason TEXT NOT NULL, duration TEXT NOT NULL, staffid TEXT NOT NULL)";
         String createSqlblacklistTicket = "CREATE TABLE IF NOT EXISTS blacklistTicket(id INTEGER PRIMARY KEY, userid TEXT NOT NULL,reason TEXT NOT NULL,duration TEXT NOT NULL,staffid TEXT NOT NULL)";
@@ -45,7 +57,7 @@ public class onSqlReady extends ListenerAdapter {
 
 
         try {
-            Statement stmt = Main.conn.createStatement();
+            Statement stmt = Databases.getMainDatabase().createStatement();
             stmt.execute(createSqlmute);
             stmt.execute(createSqlban);
             stmt.execute(createSqlblacklistTicket);
@@ -56,5 +68,33 @@ public class onSqlReady extends ListenerAdapter {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+    }
+
+    private void createCountingDatabase() throws SQLException {
+        Databases.getCountingDatabase().init();
+
+        String createCountingChannels = ("""
+                    CREATE TABLE IF NOT EXISTS counting_channels (
+                        channel_id INTEGER PRIMARY KEY,
+                        current_number INTEGER NOT NULL,
+                        last_user_id INTEGER NOT NULL,
+                        contributions TEXT NOT NULL
+                    )
+                """);
+
+        Statement stmt = Databases.getCountingDatabase().createStatement();
+        stmt.execute(createCountingChannels);
+        stmt.close();
+    }
+
+    private void createMediaDatabase() throws SQLException {
+        Databases.getMediaDatabase().init();
+
+        Statement stmt = Databases.getMediaDatabase().createStatement();
+
+
+        stmt.close();
+
     }
 }

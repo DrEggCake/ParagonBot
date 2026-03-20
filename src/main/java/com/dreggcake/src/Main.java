@@ -14,6 +14,8 @@ import com.dreggcake.src.Commands.Ticket.TicketSetup;
 import com.dreggcake.src.Config.Config;
 import com.dreggcake.src.Counting.CountingCommandsListener;
 import com.dreggcake.src.Counting.CountingListener;
+import com.dreggcake.src.Database.DAO;
+import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Listeners.*;
 import com.dreggcake.src.Listeners.Logs.TestLogging;
 import com.dreggcake.src.Listeners.ReloadCommand.ConfigReload;
@@ -24,7 +26,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Main {
@@ -36,14 +37,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Config.load();
 
-        try {
-            conn = DriverManager.getConnection(Config.getString("database.url", " "));
-            System.out.println("[SQL] Connected to database");
-        } catch (SQLException e) {
-            System.err.println("[FATAL] Failed to connect to database");
-            e.printStackTrace();
-            return;
-        }
         jda = JDABuilder.
                 create(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES).setToken(Config.getString("bot.id", "")).build();
         jda.addEventListener(new onReady());

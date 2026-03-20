@@ -25,7 +25,7 @@ public class databaseBackup extends ListenerAdapter implements Runnable {
 
                 channel.sendMessage(message).addFiles(FileUpload.fromData(databaseFile)).queue();
             } else {
-                channel.sendMessage("Database not found.").queue();
+                channel.sendMessage("DAO not found.").queue();
             }
 
         });

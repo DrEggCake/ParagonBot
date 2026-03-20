@@ -1,5 +1,6 @@
 package com.dreggcake.src.Listeners;
 
+import com.dreggcake.src.Database.DAO;
 import com.dreggcake.src.Main;
 import com.dreggcake.src.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -7,50 +8,62 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class autoUnban extends ListenerAdapter implements Runnable {
 
     @Override
     public void run() {
-        String retrieve = "SELECT * FROM bans";
+        try {
+            // Fetch all bans
+            List<BanRecord> bans = Databases.getMainDatabase().query(
+                    "SELECT id, userid, reason, duration FROM bans",
+                    rs -> {
+                        List<BanRecord> list = new ArrayList<>();
+                        while (rs.next()) {
+                            list.add(new BanRecord(
+                                    rs.getInt("id"),
+                                    rs.getString("userid"),
+                                    rs.getString("reason"),
+                                    rs.getString("duration")
+                            ));
+                        }
+                        return list;
+                    }
+            );
 
-        try (Statement stmt = Main.conn.createStatement();
-             ResultSet rs = stmt.executeQuery(retrieve)) {
+            long currentTime = System.currentTimeMillis();
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String userId = rs.getString("userid");
-                String reason = rs.getString("reason");
+            for (BanRecord ban : bans) {
                 long banExpiry;
+
                 try {
-                    banExpiry = Long.parseLong(rs.getString("duration"));
+                    banExpiry = Long.parseLong(ban.duration);
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid duration for user " + userId + ", skipping.");
+                    System.out.println("Invalid duration for user " + ban.userId + ", skipping.");
                     continue;
                 }
 
-                long currentTime = System.currentTimeMillis();
                 if (banExpiry <= currentTime) {
                     if (Utilities.GUILD == null) continue;
 
                     // Attempt to retrieve user
-                    Main.jda.retrieveUserById(userId).queue(
+                    Main.jda.retrieveUserById(ban.userId).queue(
                             user -> {
-                                // User exists, unban normally
+                                // Unban
                                 Utilities.GUILD.unban(user).queue(
-                                        success -> sendUnbanLog(user, reason),
+                                        success -> sendUnbanLog(user, ban.reason),
                                         error -> System.out.println("Failed to unban user " + user.getAsTag())
                                 );
-                                deleteBanRecord(id);
+
+                                deleteBanRecord(ban.id);
                             },
                             failure -> {
-                                // User doesn't exist (deleted account)
-                                System.out.println("User " + userId + " does not exist anymore. Removing ban record.");
-                                deleteBanRecord(id);
+                                // User doesn't exist anymore
+                                System.out.println("User " + ban.userId + " does not exist anymore. Removing ban record.");
+                                deleteBanRecord(ban.id);
                             }
                     );
                 }
@@ -62,10 +75,11 @@ public class autoUnban extends ListenerAdapter implements Runnable {
     }
 
     private void deleteBanRecord(int id) {
-        String deleteSql = "DELETE FROM bans WHERE id = ?";
-        try (PreparedStatement pstmt = Main.conn.prepareStatement(deleteSql)) {
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
+        try {
+            Databases.getMainDatabase().update(
+                    "DELETE FROM bans WHERE id = ?",
+                    id
+            );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,7 +94,24 @@ public class autoUnban extends ListenerAdapter implements Runnable {
         logEmbed.setThumbnail(user.getEffectiveAvatarUrl());
 
         if (Utilities.PUNISHMENT_LOG_CHANNEL_ID != null) {
-            Utilities.PUNISHMENT_LOG_CHANNEL_ID.sendMessageEmbeds(logEmbed.build()).queue();
+            Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                    .sendMessageEmbeds(logEmbed.build())
+                    .queue();
+        }
+    }
+
+    // Helper class
+    private static class BanRecord {
+        int id;
+        String userId;
+        String reason;
+        String duration;
+
+        public BanRecord(int id, String userId, String reason, String duration) {
+            this.id = id;
+            this.userId = userId;
+            this.reason = reason;
+            this.duration = duration;
         }
     }
 }
