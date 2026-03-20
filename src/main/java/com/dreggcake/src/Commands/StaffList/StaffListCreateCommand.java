@@ -1,12 +1,13 @@
 package com.dreggcake.src.Commands.StaffList;
 
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.StaffList.StaffMessageBuilder;
+import com.dreggcake.src.StaffList.StaffListBuild;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.container.Container;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
 import java.awt.*;
 import java.util.List;
@@ -37,11 +38,12 @@ public class StaffListCreateCommand implements ICommand {
 
         event.reply("Creating staff list...").setEphemeral(true).queue();
 
-        StaffMessageBuilder messageBuilder = new StaffMessageBuilder();
-//        event.getChannel().sendMessageComponents(messageBuilder.build(event.getGuild()).withAccentColor(Color.BLUE)).useComponentsV2().queue();
+        StaffListBuild messageBuilder = new StaffListBuild();
+        List<MessageCreateBuilder> messageList = messageBuilder.buildList();
 
-        for(Container container : messageBuilder.buildAllMessages(event.getGuild())){
-            event.getChannel().sendMessageComponents(container.withAccentColor(Color.BLUE)).useComponentsV2().queue();
+        for (MessageCreateBuilder message : messageList){
+            event.getChannel().sendMessage(message.build()).useComponentsV2().queue();
         }
+
     }
 }

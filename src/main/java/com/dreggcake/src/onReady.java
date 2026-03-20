@@ -4,7 +4,6 @@ import com.dreggcake.src.Counting.CountingDAO;
 import com.dreggcake.src.Counting.CountingDatabaseBackup;
 import com.dreggcake.src.Counting.CountingManager;
 import com.dreggcake.src.Listeners.*;
-import com.dreggcake.src.StaffList.StaffListRefresh;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -54,7 +53,6 @@ public class onReady extends ListenerAdapter {
         Runnable autoUnblacklistTicket = new autoUnblacklistTicket();
         Runnable inviteRefresh = new InviteCache(inviteTracker);
         Runnable countingDatabaseBackup = new CountingDatabaseBackup();
-        Runnable staffListRefresh = new StaffListRefresh();
 
         scheduler.scheduleWithFixedDelay(autoUnban, 10, 10, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(autoUnmute, 10, 10, TimeUnit.SECONDS);
@@ -62,7 +60,6 @@ public class onReady extends ListenerAdapter {
         scheduler.scheduleWithFixedDelay(countingDatabaseBackup, 10, 3600, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(autoUnblacklistTicket, 10, 10, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(inviteRefresh, 10, 10, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(staffListRefresh, 0, 24, TimeUnit.HOURS);
         scheduler.scheduleAtFixedRate(new Main.ActivityChanger(), 0L, 5L, TimeUnit.SECONDS);
     }
 }

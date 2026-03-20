@@ -13,12 +13,10 @@ import com.dreggcake.src.Commands.StaffList.StaffListCreateCommand;
 import com.dreggcake.src.Commands.Ticket.TicketSetup;
 import com.dreggcake.src.Config.Config;
 import com.dreggcake.src.Counting.CountingCommandsListener;
-import com.dreggcake.src.Counting.CountingDatabaseBackup;
 import com.dreggcake.src.Counting.CountingListener;
 import com.dreggcake.src.Listeners.*;
 import com.dreggcake.src.Listeners.Logs.TestLogging;
 import com.dreggcake.src.Listeners.ReloadCommand.ConfigReload;
-import com.dreggcake.src.StaffList.StaffListRefresh;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -28,9 +26,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
