@@ -64,7 +64,7 @@ public class onReady extends ListenerAdapter {
         scheduler.scheduleWithFixedDelay(autoUnblacklistTicket, 10, 10, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(inviteRefresh, 10, 10, TimeUnit.SECONDS);
         scheduler.scheduleAtFixedRate(new Main.ActivityChanger(), 0L, 5L, TimeUnit.SECONDS);
-        scheduler.scheduleAtFixedRate(staffListRefresh, 0, 20, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(staffListRefresh, 0, 24, TimeUnit.HOURS);
     }
 }
 
