@@ -91,10 +91,29 @@ public class onSqlReady extends ListenerAdapter {
     private void createMediaDatabase() throws SQLException {
         Databases.getMediaDatabase().init();
 
+        String createMediaRanks = """
+                    CREATE TABLE IF NOT EXISTS media_ranks(
+                        id INTEGER PRIMARY KEY,
+                        userid INTEGER NOT NULL,
+                        duration INTEGER NOT NULL,
+                        staffid INTEGER NOT NULL
+                    )
+                """;
+
+        String createMediaBlacklists = """
+                    CREATE TABLE IF NOT EXISTS media_blacklists(
+                        id INTEGER PRIMARY KEY,
+                        userid INTEGER NOT NULL,
+                        reason TEXT NOT NULL,
+                        duration INTEGER NOT NULL,
+                        staffid INTEGER NOT NULL
+                    )
+                """;
+
         Statement stmt = Databases.getMediaDatabase().createStatement();
-
-
+        stmt.execute(createMediaRanks);
+        stmt.execute(createMediaBlacklists);
         stmt.close();
-
     }
+
 }

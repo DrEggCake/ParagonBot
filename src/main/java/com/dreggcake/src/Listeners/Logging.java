@@ -85,7 +85,7 @@ public class Logging extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(MessageDeleteEvent event) {
-        if (Utilities.MESSAGES_LOG_CHANNEL_ID == null) return;
+        if (Utilities.MESSAGES_LOG_CHANNEL == null) return;
 
         Map<Long, Message> cache = MESSAGE_CACHE.get(event.getChannel().getIdLong());
         if (cache == null) return;
@@ -119,7 +119,7 @@ public class Logging extends ListenerAdapter {
 
     @Override
     public void onMessageUpdate(MessageUpdateEvent event) {
-        if (Utilities.MESSAGES_LOG_CHANNEL_ID == null) return;
+        if (Utilities.MESSAGES_LOG_CHANNEL == null) return;
         if (event.getMessage().getAuthor().isBot()) return;
 
         Map<Long, Message> cache = MESSAGE_CACHE
@@ -223,7 +223,7 @@ public class Logging extends ListenerAdapter {
         }
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                .thenAccept(v -> Utilities.MESSAGES_LOG_CHANNEL_ID
+                .thenAccept(v -> Utilities.MESSAGES_LOG_CHANNEL
                         .sendMessageEmbeds(embed.build())
                         .addFiles(futures.stream().map(CompletableFuture::join).toList())
                         .queue());
@@ -234,7 +234,7 @@ public class Logging extends ListenerAdapter {
             File f = File.createTempFile("edit-", ".txt");
             Files.writeString(f.toPath(), "OLD:\n" + oldC + "\n\nNEW:\n" + newC);
             embed.setDescription("Content too long, see attachment.");
-            Utilities.MESSAGES_LOG_CHANNEL_ID
+            Utilities.MESSAGES_LOG_CHANNEL
                     .sendFiles(FileUpload.fromData(f))
                     .queue();
         } catch (IOException ignored) {
@@ -248,7 +248,7 @@ public class Logging extends ListenerAdapter {
 
             embed.setDescription("Content too long, see attachment.");
 
-            Utilities.MESSAGES_LOG_CHANNEL_ID
+            Utilities.MESSAGES_LOG_CHANNEL
                     .sendMessageEmbeds(embed.build())
                     .addFiles(FileUpload.fromData(f))
                     .queue();

@@ -25,6 +25,13 @@ public class Utilities {
     public static Role STAFF_ROLE;
     public static Role BOSS_DESIGNER_ROLE;
     public static Role BUILDER_ROLE;
+    public static Role MEDIA_MANAGER_ROLE;
+
+    public static Role PARTNER_ROLE;
+    public static Role CONTENT_CREATOR_1_ROLE;
+    public static Role CONTENT_CREATOR_2_ROLE;
+    public static Role CONTENT_CREATOR_3_ROLE;
+    public static Role CONTENT_CREATOR_4_ROLE;
 
     public static Role TICKET_BLACKLIST_ROLE;
     public static Role MUTED_ROLE;
@@ -48,7 +55,9 @@ public class Utilities {
     public static TextChannel STAFF_LIST_CHANNEL;
     public static TextChannel SUPPORT_CHANNEL;
     public static TextChannel DO_NOT_DELETE_CHANNEL;
-    public static TextChannel MESSAGES_LOG_CHANNEL_ID;
+    public static TextChannel MESSAGES_LOG_CHANNEL;
+
+    public static TextChannel MEDIA_UPLOAD_CHANNEL;
 
     // ================== Categories ==================
     public static Category TICKET_CATEGORY;
@@ -84,6 +93,13 @@ public class Utilities {
         STAFF_ROLE = getRole("staffRoleID.staffRoleID");
         BOSS_DESIGNER_ROLE = getRole("staffRoleID.bossDesignerRoleID");
         BUILDER_ROLE = getRole("staffRoleID.builderRoleID");
+        MEDIA_MANAGER_ROLE = getRole("staffRoleID.mediaManagerRoleID");
+
+        PARTNER_ROLE = getRole("media.partnerRoleID");
+        CONTENT_CREATOR_1_ROLE = getRole("media.cc1RoleID");
+        CONTENT_CREATOR_2_ROLE = getRole("media.cc2RoleID");
+        CONTENT_CREATOR_3_ROLE = getRole("media.cc3RoleID");
+        CONTENT_CREATOR_4_ROLE = getRole("media.cc4RoleID");
 
         TICKET_BLACKLIST_ROLE = getRole("punishRoleID.ticketBlacklistRoleID");
         MUTED_ROLE = getRole("punishRoleID.mutedRoleID");
@@ -97,7 +113,7 @@ public class Utilities {
 
         PUNISHMENT_LOG_CHANNEL_ID = getTextChannel("ChannelsID.punishmentLogID");
         MEMBER_LOG_CHANNEL_ID = getTextChannel("ChannelsID.memberLogID");
-        MESSAGES_LOG_CHANNEL_ID = getTextChannel("ChannelsID.messagesLogID");
+        MESSAGES_LOG_CHANNEL = getTextChannel("ChannelsID.messagesLogID");
         INVITE_LOG_CHANNEL = getTextChannel("ChannelsID.inviteLogID");
         TICKET_LOG_CHANNEL = getTextChannel("ChannelsID.ticketLogID");
         TICKET_CHANNEL = getTextChannel("ChannelsID.ticketID");
@@ -107,6 +123,8 @@ public class Utilities {
         STAFF_LIST_CHANNEL = getTextChannel("ChannelsID.staffListChannelID");
         SUPPORT_CHANNEL = getTextChannel("ChannelsID.supportChannelID");
         DO_NOT_DELETE_CHANNEL = getTextChannel("ChannelsID.doNotDeleteID");
+
+        MEDIA_UPLOAD_CHANNEL = getTextChannel("media.channels.mediaUploadID");
 
         TICKET_CATEGORY = getCategory("CategoryID.ticketCategoryID");
         STAFF_LOGS = getCategory("CategoryID.staffLogsId");
