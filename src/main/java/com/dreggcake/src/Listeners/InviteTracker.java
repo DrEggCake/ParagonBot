@@ -1,5 +1,6 @@
 package com.dreggcake.src.Listeners;
 
+import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Utilities;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
@@ -12,12 +13,9 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.dreggcake.src.Main.conn;
 
 public class InviteTracker extends ListenerAdapter {
 
@@ -29,15 +27,12 @@ public class InviteTracker extends ListenerAdapter {
 
 
     private void saveInvite(String inviterId, String invitedId, String code) {
-        try (PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO invites (inviter_id, invited_id, invite_code, join_time) VALUES (?, ?, ?, ?)"
-        )) {
 
-            ps.setString(1, inviterId);
-            ps.setString(2, invitedId);
-            ps.setString(3, code);
-            ps.setLong(4, System.currentTimeMillis());
-            ps.executeUpdate();
+
+        try {
+            Databases.getMainDatabase().update("INSERT INTO invites (" +
+                    "inviter_id, invited_id, invite_code, join_time" +
+                    ") VALUES (?, ?, ?, ?)", inviterId, invitedId, code, System.currentTimeMillis());
 
         } catch (SQLException e) {
             e.printStackTrace();

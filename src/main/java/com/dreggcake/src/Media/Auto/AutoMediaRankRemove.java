@@ -54,7 +54,7 @@ public class AutoMediaRankRemove implements Runnable {
                     embed.addField("Target", member.getAsMention(), true);
                     embed.setColor(Color.BLUE);
 
-                    Utilities.COMMAND_LOG_CHANNEL
+                    Utilities.MEDIA_LOG_CHANNEL
                             .sendMessageEmbeds(embed.build())
                             .queue();
                 }

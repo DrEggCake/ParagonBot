@@ -4,12 +4,14 @@ import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Media.Logic.MediaDAO;
 import com.dreggcake.src.Media.MediaPermissions;
 import com.dreggcake.src.Utilities;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
+import java.awt.*;
 import java.util.List;
 
 public class MediaUnblacklistCommand implements ICommand
@@ -58,5 +60,12 @@ public class MediaUnblacklistCommand implements ICommand
         }
         MediaDAO.unblacklistMember(target.getIdLong());
         event.reply(target.getAsMention() + " has been unblacklisted").queue();
+
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setTitle("Member Media Unblacklisted");
+        embed.addField("Staff", event.getMember().getAsMention(), true);
+        embed.addField("Target", target.getAsMention(), true);
+        embed.setColor(Color.YELLOW);
+        Utilities.MEDIA_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
     }
 }

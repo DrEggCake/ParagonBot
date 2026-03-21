@@ -111,7 +111,7 @@ public class MediaRankCommand implements ICommand {
         embed.addField("Staff", event.getMember().getAsMention(), true);
         embed.addField("Target", target.getAsMention(), true);
         embed.setColor(Color.RED);
-        Utilities.COMMAND_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
+        Utilities.MEDIA_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
 
     }
 
@@ -138,7 +138,7 @@ public class MediaRankCommand implements ICommand {
         embed.addField("Staff", event.getMember().getAsMention(), true);
         embed.addField("Target", target.getAsMention(), true);
         embed.setColor(Color.BLUE);
-        Utilities.COMMAND_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
+        Utilities.MEDIA_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
     }
 
     private long parseTimeToSeconds(String time) {

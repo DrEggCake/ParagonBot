@@ -57,7 +57,7 @@ public class Utilities {
     public static TextChannel SUPPORT_CHANNEL;
     public static TextChannel DO_NOT_DELETE_CHANNEL;
     public static TextChannel MESSAGES_LOG_CHANNEL;
-    public static TextChannel COMMAND_LOG_CHANNEL;
+    public static TextChannel MEDIA_LOG_CHANNEL;
 
     public static TextChannel MEDIA_UPLOAD_CHANNEL;
 
@@ -125,7 +125,7 @@ public class Utilities {
         STAFF_LIST_CHANNEL = getTextChannel("ChannelsID.staffListChannelID");
         SUPPORT_CHANNEL = getTextChannel("ChannelsID.supportChannelID");
         DO_NOT_DELETE_CHANNEL = getTextChannel("ChannelsID.doNotDeleteID");
-        COMMAND_LOG_CHANNEL = getTextChannel("ChannelsID.commandLogID");
+        MEDIA_LOG_CHANNEL = getTextChannel("ChannelsID.mediaLogID");
 
         MEDIA_UPLOAD_CHANNEL = getTextChannel("media.channels.mediaUploadID");
 

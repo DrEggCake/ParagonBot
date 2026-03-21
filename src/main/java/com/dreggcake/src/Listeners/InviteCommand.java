@@ -1,28 +1,34 @@
 package com.dreggcake.src.Listeners;
 
+import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Utilities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import static com.dreggcake.src.Main.conn;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InviteCommand extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        Member member = event.getMember();
-        if(member==null) return;
-        if(!(member.getRoles().contains(Utilities.STAFF_ROLE) || member.getRoles().stream().anyMatch(role -> role.equals(Utilities.STAFF_ROLE) || role.getPosition()>=Utilities.STAFF_ROLE.getPosition()) )){
-            return;
-        }
 
         if (!event.isFromGuild()) return;
         if (event.getAuthor().isBot()) return;
+
+        Member member = event.getMember();
+        if (member == null) return;
+
+        // Role check (cleaned up)
+        boolean hasPerm = member.getRoles().stream()
+                .anyMatch(role ->
+                        role.equals(Utilities.STAFF_ROLE) ||
+                                role.getPosition() >= Utilities.STAFF_ROLE.getPosition()
+                );
+
+        if (!hasPerm) return;
 
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         if (args.length == 0) return;
@@ -38,9 +44,9 @@ public class InviteCommand extends ListenerAdapter {
         }
 
         if (cmd.equals("!invites")) {
-            showInvites(event, target.getId(), target);
+            showInvites(event, target);
         } else {
-            showInviter(event, target.getId(), target);
+            showInviter(event, target);
         }
     }
 
@@ -48,22 +54,18 @@ public class InviteCommand extends ListenerAdapter {
 
     private Member resolveMember(MessageReceivedEvent event, String[] args) {
 
-        // No argument → self
         if (args.length == 1)
             return event.getMember();
 
-        // Mention
         if (!event.getMessage().getMentions().getMembers().isEmpty())
-            return event.getMessage().getMentions().getMembers().getFirst();
+            return event.getMessage().getMentions().getMembers().get(0);
 
         String input = args[1];
 
-        // User ID
         if (input.matches("\\d{17,20}")) {
             return event.getGuild().getMemberById(input);
         }
 
-        // Username (case-insensitive)
         for (Member m : event.getGuild().getMembers()) {
             if (m.getUser().getName().equalsIgnoreCase(input)) {
                 return m;
@@ -75,44 +77,50 @@ public class InviteCommand extends ListenerAdapter {
 
     /* ================= COMMAND LOGIC ================= */
 
-    private void showInvites(MessageReceivedEvent event, String inviterId, Member target) {
-        try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT invited_id FROM invites WHERE inviter_id = ?"
-        )) {
-
-            ps.setString(1, inviterId);
-            ResultSet rs = ps.executeQuery();
+    private void showInvites(MessageReceivedEvent event, Member target) {
+        try {
+            List<String> invitedIds = Databases.getMainDatabase().query(
+                    "SELECT invited_id FROM invites WHERE inviter_id = ?",
+                    rs -> {
+                        List<String> list = new ArrayList<>();
+                        while (rs.next()) {
+                            list.add(rs.getString("invited_id"));
+                        }
+                        return list;
+                    },
+                    target.getId()
+            );
 
             StringBuilder sb = new StringBuilder(
                     "📊 **Invites for " + target.getUser().getAsTag() + "**\n\n"
             );
 
-            int count = 0;
-            while (rs.next()) {
-                sb.append("<@").append(rs.getString("invited_id")).append(">\n");
-                count++;
+            for (String id : invitedIds) {
+                sb.append("<@").append(id).append(">\n");
             }
 
-            sb.append("\n**Total:** ").append(count);
+            sb.append("\n**Total:** ").append(invitedIds.size());
+
             event.getChannel().sendMessage(sb.toString()).queue();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            event.getChannel().sendMessage("❌ Database error").queue();
         }
     }
 
-    private void showInviter(MessageReceivedEvent event, String invitedId, Member target) {
-        try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT inviter_id FROM invites WHERE invited_id = ?"
-        )) {
+    private void showInviter(MessageReceivedEvent event, Member target) {
+        try {
+            String inviterId = Databases.getMainDatabase().query(
+                    "SELECT inviter_id FROM invites WHERE invited_id = ?",
+                    rs -> rs.next() ? rs.getString("inviter_id") : null,
+                    target.getId()
+            );
 
-            ps.setString(1, invitedId);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
+            if (inviterId != null) {
                 event.getChannel().sendMessage(
                         "👤 **" + target.getUser().getAsTag() +
-                                "** was invited by <@" + rs.getString("inviter_id") + ">"
+                                "** was invited by <@" + inviterId + ">"
                 ).queue();
             } else {
                 event.getChannel().sendMessage("❌ No invite data found").queue();
@@ -120,6 +128,7 @@ public class InviteCommand extends ListenerAdapter {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            event.getChannel().sendMessage("❌ Database error").queue();
         }
     }
 }
