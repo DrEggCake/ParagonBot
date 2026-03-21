@@ -65,6 +65,7 @@ public class MediaUnblacklistCommand implements ICommand
         embed.setTitle("Member Media Unblacklisted");
         embed.addField("Staff", event.getMember().getAsMention(), true);
         embed.addField("Target", target.getAsMention(), true);
+        embed.addField("Reason", reason, false);
         embed.setColor(Color.YELLOW);
         Utilities.MEDIA_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
     }
