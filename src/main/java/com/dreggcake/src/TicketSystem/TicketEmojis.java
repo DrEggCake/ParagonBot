@@ -19,4 +19,7 @@ public class TicketEmojis {
     public final static Emoji BUG =
             Emoji.fromCustom("bug-emoji", 1485203608491261962L, false);
 
+    public final static Emoji PASSWORD =
+            Emoji.fromCustom("password-emoji", 1485226224132427827L, false);
+
 }

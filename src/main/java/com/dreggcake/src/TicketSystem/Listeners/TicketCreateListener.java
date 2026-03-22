@@ -1,9 +1,6 @@
 package com.dreggcake.src.TicketSystem.Listeners;
 
-import com.dreggcake.src.TicketSystem.TicketButton;
-import com.dreggcake.src.TicketSystem.TicketEmojis;
-import com.dreggcake.src.TicketSystem.TicketPermissions;
-import com.dreggcake.src.TicketSystem.TicketType;
+import com.dreggcake.src.TicketSystem.*;
 import com.dreggcake.src.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -52,6 +49,7 @@ public class TicketCreateListener extends ListenerAdapter {
                 .addOption("Report Player", TicketType.REPORT.getId(), TicketEmojis.REPORT)
                 .addOption("Bug Report", TicketType.BUG.getId(), TicketEmojis.BUG)
                 .addOption("Store Support", TicketType.STORE.getId(), TicketEmojis.SHOP)
+                .addOption("Password Support", TicketType.PASSWORD.getId(), TicketEmojis.PASSWORD)
                 .build();
 
         Utilities.TICKET_CATEGORY
@@ -65,7 +63,6 @@ public class TicketCreateListener extends ListenerAdapter {
                         member,
                         EnumSet.of(
                                 Permission.VIEW_CHANNEL,
-                                Permission.MESSAGE_SEND,
                                 Permission.MESSAGE_ATTACH_FILES,
                                 Permission.MESSAGE_ADD_REACTION,
                                 Permission.MESSAGE_HISTORY
@@ -85,19 +82,14 @@ public class TicketCreateListener extends ListenerAdapter {
                 )
                 .queue(channel -> {
 
-                    channel.sendMessageEmbeds(embed.build())
-                            .addComponents(ActionRow.of(dropdown))
-                            .queue();
-
-                    channel.sendMessage(Utilities.STAFF_ROLE.getAsMention())
-                            .queue(msg -> msg.delete().queue());
-
-                    channel.sendMessage(member.getAsMention())
-                            .queue(msg -> msg.delete().queue());
+                            channel.sendMessageEmbeds(embed.build())
+                                    .addComponents(ActionRow.of(dropdown))
+                                    .queue();
 
 
+                            TicketDAO.insertTicket(channel, member);
 
-                }
+                        }
                 );
     }
 }
