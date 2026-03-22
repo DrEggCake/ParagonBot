@@ -1,7 +1,6 @@
 package com.dreggcake.src.TicketSystem.Listeners;
 
 import com.dreggcake.src.TicketSystem.TicketDAO;
-import com.dreggcake.src.TicketSystem.TicketData;
 import com.dreggcake.src.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -26,45 +25,6 @@ import java.util.concurrent.TimeUnit;
 public class TicketCloseListener extends ListenerAdapter {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getMember() == null) return;
-
-        String content = event.getMessage().getContentRaw();
-
-        if(content.equals("!close")){
-            if(!(event.getChannel() instanceof TextChannel)) return;
-
-            TextChannel channel = event.getChannel().asTextChannel();
-            TicketData ticketData = TicketDAO.retrieveTicket(channel.getIdLong());
-
-            Member member = event.getMember();
-
-            boolean isStaff = member.getRoles().contains(Utilities.STAFF_ROLE);
-            boolean isAdmin = member.hasPermission(Permission.ADMINISTRATOR);
-
-            if (!(isStaff || isAdmin)) return;
-
-            generateTranscript(channel, member);
-
-            EmbedBuilder embed = new EmbedBuilder();
-            embed.setTitle("Ticket Closed");
-            embed.setDescription("Ticket will be deleted in 10 seconds, thank you for reaching out!\n"+
-                    "Have a good day! :heart:");
-            embed.setColor(Color.RED);
-            embed.setFooter("ParagonMC Ticket System");
-
-            channel.sendMessageEmbeds(embed.build()).queue(
-                    success -> {
-                        TicketDAO.deleteTicket(channel.getIdLong());
-                        channel.delete().queueAfter(10, TimeUnit.SECONDS);
-                    }
-            );
-
-        }
-
-    }
 
     static void generateTranscript(TextChannel channel, Member member) {
         channel.getHistory().retrievePast(100).queue(messages -> {
@@ -111,10 +71,10 @@ public class TicketCloseListener extends ListenerAdapter {
             if (Utilities.TICKET_LOG_CHANNEL == null) {
                 channel.getGuild().getOwner().getUser().openPrivateChannel().queue(
                         pc -> {
-                            pc.sendMessage("Log channel not Found! Unable to send transcript. Details below\n"+
+                            pc.sendMessage("Log channel not Found! Unable to send transcript. Details below\n" +
                                     channel.getName() + " " + channel.getId() + "\n" +
                                     member.getEffectiveName() + " " + member.getId()).addFiles(
-                                            FileUpload.fromData(transcriptFile, "transcript-"+channel.getName()+".txt")
+                                    FileUpload.fromData(transcriptFile, "transcript-" + channel.getName() + ".txt")
                             ).queue();
                         }
                 );
@@ -139,5 +99,43 @@ public class TicketCloseListener extends ListenerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if (event.getMember() == null) return;
+
+        String content = event.getMessage().getContentRaw();
+
+        if (content.equals("!close")) {
+            if (!(event.getChannel() instanceof TextChannel)) return;
+
+            TextChannel channel = event.getChannel().asTextChannel();
+
+            Member member = event.getMember();
+
+            boolean isStaff = member.getRoles().contains(Utilities.STAFF_ROLE);
+            boolean isAdmin = member.hasPermission(Permission.ADMINISTRATOR);
+
+            if (!(isStaff || isAdmin)) return;
+
+            generateTranscript(channel, member);
+
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setTitle("Ticket Closed");
+            embed.setDescription("Ticket will be deleted in 10 seconds, thank you for reaching out!\n" +
+                    "Have a good day! :heart:");
+            embed.setColor(Color.RED);
+            embed.setFooter("ParagonMC Ticket System");
+
+            channel.sendMessageEmbeds(embed.build()).queue(
+                    success -> {
+                        TicketDAO.deleteTicket(channel.getIdLong());
+                        channel.delete().queueAfter(10, TimeUnit.SECONDS);
+                    }
+            );
+
+        }
+
     }
 }

@@ -36,27 +36,6 @@ public class TicketDAO {
         }
     }
 
-    public static TicketData retrieveTicket(long ticketId) {
-
-        try {
-            return Databases.getMainDatabase().query(
-                    "SELECT ticketid, userid FROM tickets WHERE ticketid = ?",
-                    rs -> {
-                        if (!rs.next()) return null;
-                        return new TicketData(
-                                rs.getLong("ticketid"),
-                                rs.getLong("userid")
-                        );
-                    },
-                    ticketId
-            );
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
     public static String retrieveTicketId(long ticketId) {
 
         try {
