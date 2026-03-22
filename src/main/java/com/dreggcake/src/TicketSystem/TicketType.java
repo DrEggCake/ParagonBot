@@ -23,9 +23,7 @@ public enum TicketType {
         @Override
         public void apply(TextChannel channel, Member member) {
             channel.getManager().setName(GENERAL.id + "-" + member.getId()).queue();
-            channel.getManager().putPermissionOverride(
-                    member, EnumSet.of(Permission.MESSAGE_SEND), null
-            ).queue();
+            putMemberPermission(channel, member);
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("General Support");
@@ -49,9 +47,7 @@ public enum TicketType {
         @Override
         public void apply(TextChannel channel, Member member) {
             channel.getManager().setName(APPEAL.id + "-" + member.getId()).queue();
-            channel.getManager().putPermissionOverride(
-                    member, EnumSet.of(Permission.MESSAGE_SEND), null
-            ).queue();
+            putMemberPermission(channel, member);
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("Appeal Support");
@@ -77,9 +73,8 @@ public enum TicketType {
         @Override
         public void apply(TextChannel channel, Member member) {
             channel.getManager().setName(REPORT.id + "-" + member.getId()).queue();
-            channel.getManager().putPermissionOverride(
-                    member, EnumSet.of(Permission.MESSAGE_SEND), null
-            ).queue();
+            putMemberPermission(channel, member);
+
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("Report Player");
             embed.setDescription("Please answer the questions below\n");
@@ -103,9 +98,8 @@ public enum TicketType {
         @Override
         public void apply(TextChannel channel, Member member) {
             channel.getManager().setName(BUG.id + "-" + member.getId()).queue();
-            channel.getManager().putPermissionOverride(
-                    member, EnumSet.of(Permission.MESSAGE_SEND), null
-            ).queue();
+            putMemberPermission(channel, member);
+
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("Bug Report");
             embed.setDescription("Please answer the questions below\n");
@@ -129,9 +123,7 @@ public enum TicketType {
         @Override
         public void apply(TextChannel channel, Member member) {
             channel.getManager().setName(STORE.id + "-" + member.getId()).queue();
-            channel.getManager().putPermissionOverride(
-                    member, EnumSet.of(Permission.MESSAGE_SEND), null
-            ).queue();
+            putMemberPermission(channel, member);
 
             channel.getManager().putPermissionOverride(
                     Utilities.STAFF_ROLE, null, EnumSet.of(Permission.VIEW_CHANNEL)
@@ -158,7 +150,8 @@ public enum TicketType {
         @Override
         public void apply(TextChannel channel, Member member) {
             channel.getManager().setName(PASSWORD.id + "-" + member.getId()).queue();
-            putPermissions(channel, member);
+
+            putMemberPermission(channel, member);
 
             channel.getManager().putPermissionOverride(
                     Utilities.STAFF_ROLE, null, EnumSet.of(Permission.VIEW_CHANNEL)
@@ -207,7 +200,7 @@ public enum TicketType {
         return BY_ID.get(id);
     }
 
-    private static void putPermissions(TextChannel channel, Member member) {
+    private static void putMemberPermission(TextChannel channel, Member member) {
         channel.getManager().putPermissionOverride(
                 member,
                 EnumSet.of(Permission.MESSAGE_SEND),

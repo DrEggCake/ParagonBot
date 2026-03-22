@@ -31,11 +31,11 @@ public class TicketCreateListener extends ListenerAdapter {
             return;
         }
 
-        createTicket(member);
+        createTicket(member, event);
 
     }
 
-    private void createTicket(Member member) {
+    private void createTicket(Member member, ButtonInteractionEvent event) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle("Support Type");
         embed.setDescription("Please select the type of support you need.");
@@ -67,7 +67,7 @@ public class TicketCreateListener extends ListenerAdapter {
                                 Permission.MESSAGE_ADD_REACTION,
                                 Permission.MESSAGE_HISTORY
                         ),
-                        null
+                        EnumSet.of(Permission.MESSAGE_SEND)
                 )
                 .addPermissionOverride(
                         Utilities.STAFF_ROLE,
@@ -80,15 +80,30 @@ public class TicketCreateListener extends ListenerAdapter {
                         ),
                         null
                 )
+                .addPermissionOverride(
+                        Utilities.BUILDER_ROLE,
+                        null,
+                        EnumSet.of(Permission.VIEW_CHANNEL)
+                )
+                .addPermissionOverride(
+                        Utilities.BOSS_DESIGNER_ROLE,
+                        null,
+                        EnumSet.of(Permission.VIEW_CHANNEL)
+                )
                 .queue(channel -> {
+
+                    event.reply("Ticket created: "+channel.getAsMention()).queue();
 
                             channel.sendMessageEmbeds(embed.build())
                                     .addComponents(ActionRow.of(dropdown))
                                     .queue();
 
-
+                            channel.sendMessage(member.getAsMention()).queue(
+                                    message -> {
+                                        message.delete().queue();
+                                    }
+                            );
                             TicketDAO.insertTicket(channel, member);
-
                         }
                 );
     }
