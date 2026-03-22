@@ -1,6 +1,5 @@
 package com.dreggcake.src.Listeners;
 
-import com.dreggcake.src.Database.DAO;
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -8,7 +7,10 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.components.selections.StringSelectMenu;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
@@ -61,12 +63,30 @@ public class TicketCreate extends ListenerAdapter {
         TextChannel channel = event.getChannel().asTextChannel();
 
         switch (option) {
-            case "appeal" -> { channel.deleteMessageById(event.getMessageId()).queue(); handleAppealSupport(event); }
-            case "reportPlayer" -> { channel.deleteMessageById(event.getMessageId()).queue(); handleReportPlayer(event); }
-            case "reportBug" -> { channel.deleteMessageById(event.getMessageId()).queue(); handleReportBug(event); }
-            case "storeSupport" -> { handleStoreSupport(event); channel.deleteMessageById(event.getMessageId()).queue(); }
-            case "general" -> { channel.deleteMessageById(event.getMessageId()).queue(); handleGeneralSupport(event); }
-            case "passReset" -> { handlePasswordReset(event); channel.deleteMessageById(event.getMessageId()).queue(); }
+            case "appeal" -> {
+                channel.deleteMessageById(event.getMessageId()).queue();
+                handleAppealSupport(event);
+            }
+            case "reportPlayer" -> {
+                channel.deleteMessageById(event.getMessageId()).queue();
+                handleReportPlayer(event);
+            }
+            case "reportBug" -> {
+                channel.deleteMessageById(event.getMessageId()).queue();
+                handleReportBug(event);
+            }
+            case "storeSupport" -> {
+                handleStoreSupport(event);
+                channel.deleteMessageById(event.getMessageId()).queue();
+            }
+            case "general" -> {
+                channel.deleteMessageById(event.getMessageId()).queue();
+                handleGeneralSupport(event);
+            }
+            case "passReset" -> {
+                handlePasswordReset(event);
+                channel.deleteMessageById(event.getMessageId()).queue();
+            }
         }
     }
 
