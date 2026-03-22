@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.utils.TimeFormat;
 
+import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.sql.Timestamp;
@@ -20,6 +21,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TicketCloseListener extends ListenerAdapter {
 
@@ -39,32 +41,30 @@ public class TicketCloseListener extends ListenerAdapter {
 
             Member member = event.getMember();
 
-            if(member.getIdLong() != ticketData.userId() ||
-                    !member.getRoles().contains(Utilities.STAFF_ROLE) ||
-                    !member.hasPermission(Permission.ADMINISTRATOR)
-            ) return;
+            boolean isStaff = member.getRoles().contains(Utilities.STAFF_ROLE);
+            boolean isAdmin = member.hasPermission(Permission.ADMINISTRATOR);
+
+            if (!(isStaff || isAdmin)) return;
 
             generateTranscript(channel, member);
 
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setTitle("Ticket Closed");
+            embed.setDescription("Ticket will be deleted in 10 seconds, thank you for reaching out!\n"+
+                    "Have a good day! :heart:");
+            embed.setColor(Color.RED);
+            embed.setFooter("ParagonMC Ticket System");
 
-
-
-
-
-
-
-
-
-
-
-
-
+            channel.sendMessageEmbeds(embed.build()).queue(
+                    success -> {
+                        TicketDAO.deleteTicket(channel.getIdLong());
+                        channel.delete().queueAfter(10, TimeUnit.SECONDS);
+                    }
+            );
 
         }
 
-
     }
-
 
     static void generateTranscript(TextChannel channel, Member member) {
         channel.getHistory().retrievePast(100).queue(messages -> {
@@ -118,7 +118,6 @@ public class TicketCloseListener extends ListenerAdapter {
                             ).queue();
                         }
                 );
-
             }
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());

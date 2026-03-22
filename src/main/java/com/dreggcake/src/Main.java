@@ -10,7 +10,6 @@ import com.dreggcake.src.Commands.Embeds.InfoEmbedCommand;
 import com.dreggcake.src.Commands.Moderation.*;
 import com.dreggcake.src.Commands.OtherModeration.UnbanForce;
 import com.dreggcake.src.Commands.StaffList.StaffListCreateCommand;
-import com.dreggcake.src.Commands.Ticket.TicketSetup;
 import com.dreggcake.src.Config.Config;
 import com.dreggcake.src.Counting.CountingCommandsListener;
 import com.dreggcake.src.Counting.CountingListener;
@@ -21,6 +20,11 @@ import com.dreggcake.src.Media.Commands.MediaBlacklistCommand;
 import com.dreggcake.src.Media.Commands.MediaRankCommand;
 import com.dreggcake.src.Media.Commands.MediaUnblacklistCommand;
 import com.dreggcake.src.Media.Commands.MediaUploadCommand;
+import com.dreggcake.src.TicketSystem.Commands.TicketSetupCommand;
+import com.dreggcake.src.TicketSystem.Listeners.TicketClaimListener;
+import com.dreggcake.src.TicketSystem.Listeners.TicketCloseListener;
+import com.dreggcake.src.TicketSystem.Listeners.TicketCreateListener;
+import com.dreggcake.src.TicketSystem.Listeners.TicketTypeListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -38,12 +42,15 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Config.load();
 
-        jda = JDABuilder.
-                create(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES).setToken(Config.getString("bot.id", "")).build();
+        jda = JDABuilder.create(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES).setToken(Config.getString("bot.id", "")).build();
         jda.addEventListener(new onReady());
         jda.addEventListener(new Welcome());
-        jda.addEventListener(new TicketCreate());
-        jda.addEventListener(new TicketCloseListen());
+
+        jda.addEventListener(new TicketCreateListener());
+        jda.addEventListener(new TicketCloseListener());
+        jda.addEventListener(new TicketClaimListener());
+        jda.addEventListener(new TicketTypeListener());
+
         jda.addEventListener(new Logging());
         jda.addEventListener(new ip());
         jda.addEventListener(new store());
@@ -63,7 +70,7 @@ public class Main {
         jda.addEventListener(new ConfigReload());
 
         CommandManager manager = new CommandManager();
-        manager.add(new TicketSetup());
+        manager.add(new TicketSetupCommand());
         manager.add(new BlackListTicket());
         manager.add(new UnBlackListTicket());
         manager.add(new Ban());

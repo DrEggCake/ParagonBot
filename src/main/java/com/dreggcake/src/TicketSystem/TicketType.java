@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.awt.*;
-import java.sql.Timestamp;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +34,7 @@ public enum TicketType {
             embed.appendDescription("- What gamemode do you have issue in?");
             embed.appendDescription("- What is your issue?");
             embed.setFooter("ParagonMC Tickets");
+            embed.addField("Claimed by:", "None", false);
             embed.setThumbnail(channel.getGuild().getIconUrl());
             embed.setColor(Color.GREEN);
 
@@ -61,6 +61,7 @@ public enum TicketType {
             embed.appendDescription("- Which staff member punished you?");
             embed.appendDescription("- What gamemode were you punished in?");
             embed.setFooter("ParagonMC Tickets");
+            embed.addField("Claimed by:", "None", false);
             embed.setThumbnail(channel.getGuild().getIconUrl());
             embed.setColor(Color.GREEN);
 
@@ -85,6 +86,7 @@ public enum TicketType {
             embed.appendDescription("- Which player do you want to report?");
             embed.appendDescription("- Why do you want to report?");
             embed.setFooter("ParagonMC Tickets");
+            embed.addField("Claimed by:", "None", false);
             embed.setThumbnail(channel.getGuild().getIconUrl());
             embed.setColor(Color.GREEN);
 
@@ -109,6 +111,7 @@ public enum TicketType {
             embed.appendDescription("- Describe the bug with as much detail as you can");
             embed.appendDescription("- List the steps to reproduce the bug");
             embed.setFooter("ParagonMC Tickets");
+            embed.addField("Claimed by:", "None", false);
             embed.setThumbnail(channel.getGuild().getIconUrl());
             embed.setColor(Color.GREEN);
 
@@ -136,6 +139,7 @@ public enum TicketType {
             embed.appendDescription("- Have you made a purchase? If yes, when?");
             embed.appendDescription("- What is your issue?");
             embed.setFooter("ParagonMC Tickets");
+            embed.addField("Claimed by:", "None", false);
             embed.setThumbnail(channel.getGuild().getIconUrl());
             embed.setColor(Color.GREEN);
 
@@ -168,6 +172,7 @@ public enum TicketType {
             embed.appendDescription("What is your IP-Address? You can get this at https://whatismyipaddress.com/");
             embed.appendDescription("\n If you do not answer all the questions ticket will be closed instantly");
             embed.setFooter("ParagonMC Tickets");
+            embed.addField("Claimed by:", "None", false);
             embed.setThumbnail(channel.getGuild().getIconUrl());
             embed.setColor(Color.GREEN);
 
