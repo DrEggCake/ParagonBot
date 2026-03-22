@@ -27,7 +27,7 @@ public class TicketClaimListener extends ListenerAdapter {
         var embed = message.getEmbeds().get(0);
 
         boolean alreadyClaimed = embed.getFields().stream()
-                .anyMatch(f -> f.getName().equalsIgnoreCase("Claimed by:"));
+                .anyMatch(f -> f.getValue().equalsIgnoreCase(""));
 
         if (alreadyClaimed) {
             event.reply("This ticket is already claimed.")
