@@ -2,7 +2,7 @@ package com.dreggcake.src.TicketSystem.Listeners;
 
 import com.dreggcake.src.TicketSystem.TicketDAO;
 import com.dreggcake.src.TicketSystem.TicketType;
-import net.dv8tion.jda.api.components.selections.StringSelectMenu;
+import com.dreggcake.src.Utilities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,7 +11,6 @@ public class TicketTypeListener extends ListenerAdapter {
 
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event) {
-        StringSelectMenu selectMenu = event.getSelectMenu();
         long channelIdLong = event.getChannelIdLong();
         Member member = event.getMember();
 
@@ -30,6 +29,17 @@ public class TicketTypeListener extends ListenerAdapter {
 
         event.getMessage().delete().queue();
 
+        event.getChannel().sendMessage(Utilities.STAFF_ROLE.getAsMention()).queue(
+                message -> {
+                    message.delete().queue();
+                }
+        );
+
+        event.getChannel().sendMessage(event.getMember().getAsMention()).queue(
+                message -> {
+                    message.delete().queue();
+                }
+        );
 
     }
 }

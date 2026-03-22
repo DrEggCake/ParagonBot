@@ -5,7 +5,8 @@ import java.util.Map;
 
 public enum TicketButton {
 
-    CREATE("create-ticket");
+    CREATE("create-ticket"),
+    CLAIM("claim-ticket");
 
     private final String id;
 
