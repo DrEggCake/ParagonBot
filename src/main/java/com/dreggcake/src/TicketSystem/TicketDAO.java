@@ -12,7 +12,7 @@ public class TicketDAO {
     public static void insertTicket(TextChannel channel, Member member) {
         try {
             Databases.getMainDatabase().update("""
-                            INSERT OR IGNORE INTO tickets (
+                            INSERT INTO tickets (
                                 ticketid, userid, created_at )
                                 VALUES (?, ?, ?)
                             """,
