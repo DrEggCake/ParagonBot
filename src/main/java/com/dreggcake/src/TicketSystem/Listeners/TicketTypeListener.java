@@ -14,7 +14,7 @@ public class TicketTypeListener extends ListenerAdapter {
         long channelIdLong = event.getChannelIdLong();
         Member member = event.getMember();
 
-        long ticketMember = Long.parseLong(TicketDAO.retrieveTicketMember(channelIdLong));
+        long ticketMember = Long.parseLong(TicketDAO.retrieveTicketMemberId(channelIdLong));
 
         if (member.getIdLong() != ticketMember) {
             event.reply("Not your ticket!").queue();
