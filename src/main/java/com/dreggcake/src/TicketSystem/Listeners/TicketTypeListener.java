@@ -11,6 +11,8 @@ public class TicketTypeListener extends ListenerAdapter {
 
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event) {
+        event.deferEdit().queue();
+
         long channelIdLong = event.getChannelIdLong();
         Member member = event.getMember();
 
