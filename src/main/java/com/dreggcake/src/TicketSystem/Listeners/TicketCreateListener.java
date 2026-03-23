@@ -92,7 +92,7 @@ public class TicketCreateListener extends ListenerAdapter {
                 )
                 .queue(channel -> {
 
-                            event.reply("Ticket created: " + channel.getAsMention()).queue();
+                            event.reply("Ticket created: " + channel.getAsMention()).setEphemeral(true).queue();
 
                             channel.sendMessageEmbeds(embed.build())
                                     .addComponents(ActionRow.of(dropdown))

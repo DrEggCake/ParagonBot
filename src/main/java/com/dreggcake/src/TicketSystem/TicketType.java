@@ -203,7 +203,7 @@ public enum TicketType {
     private static void putMemberPermission(TextChannel channel, Member member) {
         channel.getManager().putPermissionOverride(
                 member,
-                EnumSet.of(Permission.MESSAGE_SEND),
+                EnumSet.of(Permission.VIEW_CHANNEL,Permission.MESSAGE_SEND),
                 null
         ).queue();
     }
