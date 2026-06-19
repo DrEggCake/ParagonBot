@@ -13,6 +13,7 @@ public class StaffRoles {
             Utilities.OWNER_ROLE,
             Utilities.DEV_ROLE,
             Utilities.MANAGER_ROLE,
+            Utilities.MEDIA_MANAGER_ROLE,
             Utilities.BUILDER_ROLE,
             Utilities.BOSS_DESIGNER_ROLE,
             Utilities.SR_ADMIN_ROLE,
@@ -32,7 +33,8 @@ public class StaffRoles {
             Utilities.LIFESTEAL_ROLE,
             Utilities.PRISON_ROLE,
             Utilities.MINIGAMES_ROLE,
-            Utilities.COBBLEMON_ROLE
+            Utilities.COBBLEMON_ROLE,
+            Utilities.EARTH_ROLE
     );
 
     public Role getStaffRole() {
