@@ -57,14 +57,11 @@ public class UnBlackListTicket implements ICommand {
         }
 
         // Permission check
-        boolean hasPermission = executer.getRoles().stream()
-                .anyMatch(role -> role.equals(Utilities.SR_MOD_ROLE)
-                        || role.getPosition() >= Utilities.SR_MOD_ROLE.getPosition());
-
-        if (!hasPermission) {
-            event.reply("You don't have permissions").setEphemeral(true).queue();
+        if(executer.getRoles().stream().noneMatch(ModUtility.getUnblacklistTicketStaff()::contains)){
+            event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }
+
 
         try {
             // Fetch blacklist reason

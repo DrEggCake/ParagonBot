@@ -45,12 +45,8 @@ public class Unban implements ICommand {
         String reason = event.getOption("reason").getAsString();
 
         // Permission check
-        if (!(executer.getRoles().contains(Utilities.SR_MOD_ROLE)
-                || executer.getRoles().stream().anyMatch(role ->
-                role.equals(Utilities.SR_MOD_ROLE)
-                        || role.getPosition() >= Utilities.SR_MOD_ROLE.getPosition()))) {
-
-            event.reply("No permissions").setEphemeral(true).queue();
+        if(executer.getRoles().stream().noneMatch(ModUtility.getUnbanModStaff()::contains)){
+            event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }
 

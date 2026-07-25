@@ -66,12 +66,8 @@ public class Mute implements ICommand {
                 : event.getOption("reason").getAsString();
 
         // Permission check
-        if (!(executer.getRoles().contains(Utilities.SUPPORT_ROLE)
-                || executer.getRoles().stream().anyMatch(role ->
-                role.equals(Utilities.SUPPORT_ROLE)
-                        || role.getPosition() >= Utilities.SUPPORT_ROLE.getPosition()))) {
-
-            event.reply("No permissions").setEphemeral(true).queue();
+        if(executer.getRoles().stream().noneMatch(ModUtility.getMuteModStaff()::contains)){
+            event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }
 

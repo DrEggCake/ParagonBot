@@ -47,13 +47,11 @@ public class BlackListTicket implements ICommand {
         String time = event.getOption("duration").getAsString();
 
         // Permission check
-        if (!executer.getRoles().stream().anyMatch(role ->
-                role.equals(Utilities.SR_MOD_ROLE)
-                        || role.getPosition() >= Utilities.SR_MOD_ROLE.getPosition())) {
-
-            event.reply("You don't have permission").setEphemeral(true).queue();
+        if(executer.getRoles().stream().noneMatch(ModUtility.getBlacklistTicketStaff()::contains)){
+            event.reply("You do not have permission.").setEphemeral(true).queue();
             return;
         }
+
 
         try {
             // Check if already blacklisted

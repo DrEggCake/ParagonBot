@@ -41,16 +41,14 @@ public class ChangeBan implements ICommand {
         Member executer = event.getMember();
         if (executer == null) return;
 
-        if (!(executer.getRoles().contains(Utilities.SR_MOD_ROLE)
-                || executer.getRoles().stream().anyMatch(role ->
-                role.equals(Utilities.JR_MOD_ROLE)
-                        || role.getPosition() >= Utilities.JR_MOD_ROLE.getPosition()))) {
-
-            event.reply("No permissions").setEphemeral(true).queue();
+        // Permission check
+        if(executer.getRoles().stream().noneMatch(ModUtility.getChangeBanStaff()::contains)){
+            event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }
 
         String bannedUserId = event.getOption("userid").getAsString();
+
         String durationStr = event.getOption("new-duration").getAsString();
         long newDurationMillis = System.currentTimeMillis() + parseTimeToMillis(durationStr);
         String changeReason = event.getOption("reason").getAsString();

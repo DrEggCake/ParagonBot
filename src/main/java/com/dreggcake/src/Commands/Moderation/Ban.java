@@ -79,14 +79,11 @@ public class Ban implements ICommand {
                 : event.getOption("reason").getAsString();
 
         // Permission check
-        if (!(executer.getRoles().contains(Utilities.JR_MOD_ROLE)
-                || executer.getRoles().stream().anyMatch(role ->
-                role.equals(Utilities.JR_MOD_ROLE)
-                        || role.getPosition() >= Utilities.JR_MOD_ROLE.getPosition()))) {
-
-            event.reply("No permissions").setEphemeral(true).queue();
+        if(executer.getRoles().stream().noneMatch(ModUtility.getBanModStaff()::contains)){
+            event.reply("You do not have permission.").setEphemeral(true).queue();
             return;
         }
+
 
         try {
             // Check if already banned

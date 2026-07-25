@@ -42,14 +42,11 @@ public class Unmute implements ICommand {
         if (executer == null) return;
 
         // Permission check
-        if (!executer.getRoles().stream().anyMatch(role ->
-                role.equals(Utilities.SR_MOD_ROLE)
-                        || role.getPosition() > Utilities.SR_MOD_ROLE.getPosition())) {
-
-            event.reply("You don't have necessary permissions.")
-                    .setEphemeral(true).queue();
+        if(executer.getRoles().stream().noneMatch(ModUtility.getUnmuteModStaff()::contains)){
+            event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }
+
 
         try {
             User muted = event.getOption("user").getAsUser();
