@@ -73,20 +73,21 @@ public class InfoEmbedCommand implements ICommand {
 
                         "## :link: Important Links\n" +
                         "- [Apply for Staff](https://docs.google.com/forms/d/e/1FAIpQLSdrt6O0-xu-M0t6j7XjCY2QbORAVmViJmN816uUWJXpGA3Bqg/viewform)\n" +
-                        "- [Server Store](https://www.paragonnetwork.us/)\n" +
+                        "- [Server Store](" + Utilities.STORE + ")\n" +
                         "- [Server Rules](https://docs.google.com/document/d/1dHlB99Z8CH49B0DKjXySQEfV8fmOERc8hoqpTCuhuJg/edit?usp=sharing)\n" +
 
                         "## :star2: Vote Links\n" +
                         "Support the server and earn rewards by voting for us!\n" +
-                        "- [Vote Link #1](https://minecraftservers.org/vote/682220)\n" +
-                        "- [Vote Link #2](https://www.planetminecraft.com/server/paragon-network-6822468/vote/)\n" +
-                        "- [Vote Link #3](https://best-minecraft-servers.co/server-paragon-network-us.32062/vote)\n" +
-                        "- [Vote Link #4](https://topminecraftservers.org/vote/42499)\n" +
-                        "- [Vote Link #5](https://minecraft.buzz/vote/18482)\n" +
+                        "- [Vote Link #1](https://www.minerank.com/paragon-network/vote)\n" +
+                        "- [Vote Link #2](https://minecraftservers.blog/server/paragon-network/vote)\n" +
+                        "- [Vote Link #3](https://minecraftservers.org/vote/682220)\n" +
+                        "- [Vote Link #4](https://play-minecraft-servers.com/minecraft-servers/paragon-network/?tab=vote)\n" +
+                        "- [Vote Link #5](https://minecraft.global/servers/05cb77c2-c392-444a-acf7-717705bcdfea/vote)\n" +
                         "- [Vote Link #6](https://minecraft-serverlist.com/server/4015/vote)\n" +
-                        "- [Vote Link #7](https://minecraft.global/servers/05cb77c2-c392-444a-acf7-717705bcdfea/vote)\n" +
-                        "- [Vote Link #8](https://play-minecraft-servers.com/minecraft-servers/paragon-network/?tab=vote#server-vote)\n" +
-                        "- [Vote Link #9](https://minecraft-server.net/vote/Paragon-Network/)\n" +
+                        "- [Vote Link #7](https://minecraft.buzz/vote/paragon-network)\n" +
+                        "- [Vote Link #8](https://topminecraftservers.org/vote/42499)\n" +
+                        "- [Vote Link #9](https://best-minecraft-servers.co/server-paragon-network.32062/vote)\n" +
+                        "- [Vote Link #10](https://www.planetminecraft.com/server/paragon-network-6822468/vote/)\n" +
 
                         "## :tickets: Ticket Support\n" +
                         "Need support? Open a ticket for:\n" +
@@ -94,7 +95,7 @@ public class InfoEmbedCommand implements ICommand {
                         "- **Appeal Support:** Want to appeal a ban or punishment? Reach out here.\n" +
                         "- **Purchase Support:** Questions about related to our online store.\n" +
                         "- **Password Support:** Having issues with logging in? We're here to help.\n" +
-                        "- **Report Support:** Found a troublemaker? Report them here. \n"+
+                        "- **Report Support:** Found a troublemaker? Report them here. \n" +
                         "- **And more...**\n" +
                         "Find ticket support here: <#1404676057386324019>\n" +
 
