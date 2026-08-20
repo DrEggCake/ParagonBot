@@ -13,6 +13,8 @@ public class ip extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        if(event.getMessage().getCategory() == Utilities.TICKET_CATEGORY)
+            return;
         String msg = event.getMessage().getContentRaw();
         if(msg.equalsIgnoreCase("!ip") || msg.equalsIgnoreCase("ip?")){
             sendip(event.getMessage(), event);
