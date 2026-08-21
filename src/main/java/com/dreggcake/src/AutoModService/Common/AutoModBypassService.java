@@ -11,7 +11,8 @@ public class AutoModBypassService {
 
     // Roles that bypass automod service
     private static final Set<Long> BYPASS_ROLE_IDS = Set.of(
-            Utilities.STAFF_ROLE.getIdLong()
+            Utilities.STAFF_ROLE.getIdLong(),
+            Utilities.PARTNER_ROLE.getIdLong()
     );
 
     private AutoModBypassService() {
