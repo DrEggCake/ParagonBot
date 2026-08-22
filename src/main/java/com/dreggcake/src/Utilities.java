@@ -65,6 +65,10 @@ public class Utilities {
     public static Category TICKET_CATEGORY;
     public static Category STAFF_LOGS;
 
+    // ============= Partner Announcement Channels ==============
+    public static TextChannel PARTNER_QUEEN_CHANNEL;
+
+
     // ================== Users ==================
     public static User DREGGCAKE;
 
@@ -131,6 +135,8 @@ public class Utilities {
 
         TICKET_CATEGORY = getCategory("CategoryID.ticketCategoryID");
         STAFF_LOGS = getCategory("CategoryID.staffLogsId");
+
+        PARTNER_QUEEN_CHANNEL = getTextChannel("Partner.queenChannel");
 
         DREGGCAKE = getUser(jda, "dreggcake.id");
 
