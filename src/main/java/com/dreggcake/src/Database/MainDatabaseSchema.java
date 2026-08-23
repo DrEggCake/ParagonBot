@@ -44,6 +44,12 @@ final class MainDatabaseSchema {
                     PRIMARY KEY (guild_id, gamemode)
                 )
             """);
+
+            stmt.execute("""
+                    CREATE TABLE IF NOT EXISTS tickets_auto (
+                    
+                    )
+                    """);
         }
     }
 }

@@ -3,9 +3,11 @@ package com.dreggcake.src;
 import com.dreggcake.src.Database.DatabaseBackup;
 import com.dreggcake.src.InviteTracker.InviteTracker;
 import com.dreggcake.src.Media.Auto.AutoMediaRankRemove;
+import com.dreggcake.src.Miscellaneous.VoteReminder;
 import com.dreggcake.src.Moderation.autoUnban;
 import com.dreggcake.src.Moderation.autoUnmute;
 import com.dreggcake.src.StaffList.StaffListRefresh;
+import com.dreggcake.src.TicketSystem.AutoBot.AutoCloseService;
 import com.dreggcake.src.TicketSystem.autoUnblacklistTicket;
 
 import java.util.concurrent.Executors;
@@ -32,5 +34,12 @@ public final class RecurringTasks {
         scheduler.scheduleAtFixedRate(new Main.ActivityChanger(), 0L, 5L, TimeUnit.SECONDS);
         scheduler.scheduleAtFixedRate(new StaffListRefresh(), 0, 24, TimeUnit.HOURS);
         scheduler.scheduleAtFixedRate(new AutoMediaRankRemove(), 0, 10, TimeUnit.MINUTES);
+
+        // TicketSystem.AutoBot: periodic ticket activity scan
+        scheduler.scheduleWithFixedDelay(AutoCloseService.get(), 1, 10, TimeUnit.MINUTES);
+
+        // Miscellaneous: recurring vote reminder
+        scheduler.scheduleAtFixedRate(new VoteReminder(),
+                VoteReminder.INTERVAL, VoteReminder.INTERVAL, TimeUnit.HOURS);
     }
 }

@@ -20,10 +20,12 @@ import com.dreggcake.src.Media.Commands.MediaRankCommand;
 import com.dreggcake.src.Media.Commands.MediaUnblacklistCommand;
 import com.dreggcake.src.Media.Commands.MediaUploadCommand;
 import com.dreggcake.src.Miscellaneous.Commands.GuideCommand;
+import com.dreggcake.src.Miscellaneous.VoteCommand;
 import com.dreggcake.src.Miscellaneous.NSCommands.Ip;
 import com.dreggcake.src.Miscellaneous.NSCommands.Set;
 import com.dreggcake.src.Miscellaneous.NSCommands.Store;
 import com.dreggcake.src.Miscellaneous.NSCommands.Welcome;
+import com.dreggcake.src.Miscellaneous.VoteTextCommand;
 import com.dreggcake.src.Moderation.*;
 import com.dreggcake.src.Moderation.OtherModeration.UnbanForce;
 import com.dreggcake.src.StaffList.Commands.StaffListCreateCommand;
@@ -35,6 +37,9 @@ import com.dreggcake.src.TicketSystem.Listeners.TicketClaimListener;
 import com.dreggcake.src.TicketSystem.Listeners.TicketCloseListener;
 import com.dreggcake.src.TicketSystem.Listeners.TicketCreateListener;
 import com.dreggcake.src.TicketSystem.Listeners.TicketTypeListener;
+import com.dreggcake.src.TicketSystem.AutoBot.AutoCloseToggle;
+import com.dreggcake.src.TicketSystem.AutoBot.TicketActivityListener;
+import com.dreggcake.src.TicketSystem.Listeners.StaffPingGuard;
 import com.dreggcake.src.Utility.Emoji;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -64,6 +69,9 @@ public class Main extends ListenerAdapter {
         jda.addEventListener(new TicketCloseListener());
         jda.addEventListener(new TicketClaimListener());
         jda.addEventListener(new TicketTypeListener());
+        jda.addEventListener(new StaffPingGuard());
+        jda.addEventListener(new TicketActivityListener());
+        jda.addEventListener(new AutoCloseToggle());
 
         jda.addEventListener(new MessageLogging());
         jda.addEventListener(new MemberLogging());
@@ -81,6 +89,7 @@ public class Main extends ListenerAdapter {
         jda.addEventListener(new SwearListener());
         jda.addEventListener(new AutoDeleteListener());
         jda.addEventListener(new ConfigReload());
+        jda.addEventListener(new VoteTextCommand());
 
         CommandManager manager = new CommandManager();
         manager.add(new TicketSetupCommand());
@@ -100,6 +109,7 @@ public class Main extends ListenerAdapter {
         manager.add(new MediaUploadCommand());
         manager.add(new MediaBlacklistCommand());
         manager.add(new MediaUnblacklistCommand());
+        manager.add(new VoteCommand());
 
         manager.add(new RenameTicket());
 
