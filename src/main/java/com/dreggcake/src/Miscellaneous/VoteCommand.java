@@ -1,7 +1,6 @@
 package com.dreggcake.src.Miscellaneous;
 
 import com.dreggcake.src.ICommand;
-import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
@@ -31,7 +30,7 @@ public class VoteCommand implements ICommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         event.replyEmbeds(VoteEmbeds.embed())
-                .addComponents(ActionRow.of(VoteEmbeds.buttons()))
+                .addComponents(VoteEmbeds.rows())
                 .queue();
     }
 }

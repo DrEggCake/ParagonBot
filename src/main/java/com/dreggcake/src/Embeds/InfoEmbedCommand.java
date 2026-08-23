@@ -1,6 +1,7 @@
 package com.dreggcake.src.Embeds;
 
 import com.dreggcake.src.ICommand;
+import com.dreggcake.src.Config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -69,6 +70,8 @@ public class InfoEmbedCommand implements ICommand {
 
     private void sendEmbed(SlashCommandInteractionEvent event) {
 
+        String voteLinksSection = buildVoteLinksSection();
+
         String description =
                 "Welcome to our community! Below you'll find important links for applications, server info, and more.\n" +
 
@@ -77,18 +80,7 @@ public class InfoEmbedCommand implements ICommand {
                         "- [Server Store](" + RuntimeValues.STORE + ")\n" +
                         "- [Server Rules](https://docs.google.com/document/d/1dHlB99Z8CH49B0DKjXySQEfV8fmOERc8hoqpTCuhuJg/edit?usp=sharing)\n" +
 
-                        "## :star2: Vote Links\n" +
-                        "Support the server and earn rewards by voting for us!\n" +
-                        "- [Vote Link #1](https://www.minerank.com/paragon-network/vote)\n" +
-                        "- [Vote Link #2](https://minecraftservers.blog/server/paragon-network/vote)\n" +
-                        "- [Vote Link #3](https://minecraftservers.org/vote/682220)\n" +
-                        "- [Vote Link #4](https://play-minecraft-servers.com/minecraft-servers/paragon-network/?tab=vote)\n" +
-                        "- [Vote Link #5](https://minecraft.global/servers/05cb77c2-c392-444a-acf7-717705bcdfea/vote)\n" +
-                        "- [Vote Link #6](https://minecraft-serverlist.com/server/4015/vote)\n" +
-                        "- [Vote Link #7](https://minecraft.buzz/vote/paragon-network)\n" +
-                        "- [Vote Link #8](https://topminecraftservers.org/vote/42499)\n" +
-                        "- [Vote Link #9](https://best-minecraft-servers.co/server-paragon-network.32062/vote)\n" +
-                        "- [Vote Link #10](https://www.planetminecraft.com/server/paragon-network-6822468/vote/)\n" +
+                        voteLinksSection +
 
                         "## :tickets: Ticket Support\n" +
                         "Need support? Open a ticket for:\n" +
@@ -115,5 +107,20 @@ public class InfoEmbedCommand implements ICommand {
         event.getChannel()
                 .sendMessageEmbeds(embed.build())
                 .queue();
+    }
+
+    private String buildVoteLinksSection() {
+        List<String> voteLinks = Config.getStringList("messages.voteLinks");
+        if (voteLinks.isEmpty()) return "";
+
+        StringBuilder section = new StringBuilder(
+                "## :star2: Vote Links\n" +
+                        "Support the server and earn rewards by voting for us!\n");
+
+        for (int i = 0; i < voteLinks.size(); i++) {
+            section.append("- [Vote Link #").append(i + 1).append("](").append(voteLinks.get(i)).append(")\n");
+        }
+
+        return section.toString();
     }
 }

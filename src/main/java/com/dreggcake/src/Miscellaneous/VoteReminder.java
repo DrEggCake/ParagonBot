@@ -2,7 +2,6 @@ package com.dreggcake.src.Miscellaneous;
 
 import com.dreggcake.src.Config.Config;
 import com.dreggcake.src.Utility.GuildContext;
-import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 /**
@@ -19,7 +18,7 @@ public class VoteReminder implements Runnable {
         if (channel == null) return;
 
         channel.sendMessageEmbeds(VoteEmbeds.embed())
-                .addComponents(ActionRow.of(VoteEmbeds.buttons()))
+                .addComponents(VoteEmbeds.rows())
                 .queue();
     }
 

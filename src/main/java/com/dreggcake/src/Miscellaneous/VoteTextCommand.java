@@ -1,7 +1,6 @@
 package com.dreggcake.src.Miscellaneous;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
@@ -16,7 +15,7 @@ public class VoteTextCommand extends ListenerAdapter {
         if (!event.getMessage().getContentStripped().equalsIgnoreCase("!vote")) return;
 
         event.getChannel().sendMessageEmbeds(VoteEmbeds.embed())
-                .addComponents(ActionRow.of(VoteEmbeds.buttons()))
+                .addComponents(VoteEmbeds.rows())
                 .queue();
     }
 }

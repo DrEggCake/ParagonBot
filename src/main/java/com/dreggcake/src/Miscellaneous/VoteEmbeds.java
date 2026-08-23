@@ -4,6 +4,7 @@ import com.dreggcake.src.Config.Config;
 import com.dreggcake.src.Utility.RuntimeValues;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 
 import java.awt.*;
@@ -46,7 +47,7 @@ final class VoteEmbeds {
         List<Button> buttons = new ArrayList<>();
 
         List<String> voteLinks = voteLinks();
-        for (int i = 0; i < voteLinks.size() && buttons.size() < 5; i++) {
+        for (int i = 0; i < voteLinks.size(); i++) {
             buttons.add(Button.link(voteLinks.get(i), "Vote #" + (i + 1)));
         }
 
@@ -55,6 +56,18 @@ final class VoteEmbeds {
             buttons.add(Button.link(store, "🛒 Store"));
         }
         return buttons;
+    }
+
+    /**
+     * Buttons chunked into action rows of five (Discord limit).
+     */
+    static List<ActionRow> rows() {
+        List<Button> buttons = buttons();
+        List<ActionRow> rows = new ArrayList<>();
+        for (int i = 0; i < buttons.size(); i += 5) {
+            rows.add(ActionRow.of(buttons.subList(i, Math.min(i + 5, buttons.size()))));
+        }
+        return rows;
     }
 
     private static List<String> voteLinks() {
