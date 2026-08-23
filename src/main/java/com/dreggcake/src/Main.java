@@ -13,7 +13,8 @@ import com.dreggcake.src.Counting.CountingListener;
 import com.dreggcake.src.Embeds.InfoEmbedCommand;
 import com.dreggcake.src.InviteTracker.InviteCommand;
 import com.dreggcake.src.InviteTracker.InviteTracker;
-import com.dreggcake.src.Logging.Logging;
+import com.dreggcake.src.Logging.MemberLogging;
+import com.dreggcake.src.Logging.MessageLogging;
 import com.dreggcake.src.Media.Commands.MediaBlacklistCommand;
 import com.dreggcake.src.Media.Commands.MediaRankCommand;
 import com.dreggcake.src.Media.Commands.MediaUnblacklistCommand;
@@ -63,7 +64,8 @@ public class Main extends ListenerAdapter {
         jda.addEventListener(new TicketClaimListener());
         jda.addEventListener(new TicketTypeListener());
 
-        jda.addEventListener(new Logging());
+        jda.addEventListener(new MessageLogging());
+        jda.addEventListener(new MemberLogging());
         jda.addEventListener(new Ip());
         jda.addEventListener(new Store());
         jda.addEventListener(new Set());

@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import com.dreggcake.src.Utility.GuildContext;
 
-import static com.dreggcake.src.Main.jda;
 
 public class CountingManager {
 
@@ -16,7 +16,7 @@ public class CountingManager {
     }
 
     public static void enable(long channelId) {
-        TextChannel channel = jda.getTextChannelById(channelId);
+        TextChannel channel = GuildContext.JDA.getTextChannelById(channelId);
         STATES.putIfAbsent(channelId, new CountingState(channelId,channel));
     }
 

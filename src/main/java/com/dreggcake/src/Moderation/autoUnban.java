@@ -1,7 +1,6 @@
 package com.dreggcake.src.Moderation;
 
 import com.dreggcake.src.Database.Databases;
-import com.dreggcake.src.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -51,7 +50,7 @@ public class autoUnban extends ListenerAdapter implements Runnable {
                     if (GuildContext.GUILD == null) continue;
 
                     // Attempt to retrieve user
-                    Main.jda.retrieveUserById(ban.userId).queue(
+                    GuildContext.JDA.retrieveUserById(ban.userId).queue(
                             user -> {
                                 // Unban
                                 GuildContext.GUILD.unban(user).queue(

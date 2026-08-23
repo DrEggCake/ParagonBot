@@ -1,40 +1,35 @@
 package com.dreggcake.src.Logging;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
-import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateAvatarEvent;
-import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
-import net.dv8tion.jda.api.events.session.ReadyEvent;
-import net.dv8tion.jda.api.events.user.update.UserUpdateAvatarEvent;
-import net.dv8tion.jda.api.events.user.update.UserUpdateGlobalNameEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import com.dreggcake.src.Utility.Channels;
 
-public class Logging extends ListenerAdapter {
+/**
+ * Logs message edits and deletions to the message log channel,
+ * backed by an in-memory cache of recent messages.
+ */
+public class MessageLogging extends ListenerAdapter {
 
     private static final int MAX_CACHE_PER_CHANNEL = 500;
-
-    /**
-     * Member ID -> Roles
-     */
-    private static final Map<String, List<Role>> MEMBER_ROLES = new ConcurrentHashMap<>();
 
     /**
      * Channel ID -> (Message ID -> Message)
@@ -43,35 +38,19 @@ public class Logging extends ListenerAdapter {
 
     /* ---------------- READY ---------------- */
 
-    public static void cacheMemberRoles(Member member) {
-        if (member == null) return;
-        MEMBER_ROLES.put(member.getId(), member.getRoles());
-    }
-
-    @Override
-    public void onReady(ReadyEvent event) {
-        System.out.println("Bot ready in " + event.getJDA().getGuilds().size() + " guilds.");
-    }
-
-    /* ---------------- MESSAGE CACHE ---------------- */
-
     @Override
     public void onGuildReady(GuildReadyEvent event) {
         Guild guild = event.getGuild();
-
-        for (Member member : guild.getMembers()) {
-            MEMBER_ROLES.put(member.getId(), member.getRoles());
-        }
 
         for (TextChannel channel : guild.getTextChannels()) {
             MESSAGE_CACHE.putIfAbsent(channel.getIdLong(), createCache());
             preloadMessages(channel, MESSAGE_CACHE.get(channel.getIdLong()));
         }
 
-        System.out.println("[LOGGING] Cached roles & messages for " + guild.getName());
+        System.out.println("[LOGGING] Cached messages for " + guild.getName());
     }
 
-    /* ---------------- MESSAGE DELETE ---------------- */
+    /* ---------------- CACHE MAINTENANCE ---------------- */
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -80,8 +59,7 @@ public class Logging extends ListenerAdapter {
                 .put(event.getMessageIdLong(), event.getMessage());
     }
 
-
-    /* ---------------- MESSAGE EDIT ---------------- */
+    /* ---------------- DELETE ---------------- */
 
     @Override
     public void onMessageDelete(MessageDeleteEvent event) {
@@ -115,7 +93,7 @@ public class Logging extends ListenerAdapter {
         }
     }
 
-    /* ---------------- ROLES ---------------- */
+    /* ---------------- EDIT ---------------- */
 
     @Override
     public void onMessageUpdate(MessageUpdateEvent event) {
@@ -147,57 +125,7 @@ public class Logging extends ListenerAdapter {
         cache.put(event.getMessageIdLong(), event.getMessage());
     }
 
-    @Override
-    public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event) {
-        logRoles(event.getMember(), event.getRoles(), "Roles Added", Color.YELLOW);
-    }
-
-    /* ---------------- PROFILE UPDATES ---------------- */
-
-    @Override
-    public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent event) {
-        List<Role> before = MEMBER_ROLES.getOrDefault(event.getMember().getId(), List.of());
-        List<Role> removed = before.stream()
-                .filter(r -> !event.getMember().getRoles().contains(r))
-                .toList();
-
-        logRoles(event.getMember(), removed, "Roles Removed", Color.RED);
-        MEMBER_ROLES.put(event.getMember().getId(), event.getMember().getRoles());
-    }
-
-    @Override
-    public void onGuildMemberUpdateAvatar(GuildMemberUpdateAvatarEvent event) {
-        logAvatar("Server Avatar Updated", event.getMember().getUser());
-    }
-
-    @Override
-    public void onUserUpdateAvatar(UserUpdateAvatarEvent event) {
-        logAvatar("Global Avatar Updated", event.getUser());
-    }
-
-    @Override
-    public void onUserUpdateGlobalName(UserUpdateGlobalNameEvent event) {
-        EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Global Name Updated")
-                .addField("Old", event.getOldGlobalName() == null ? "None" : event.getOldGlobalName(), true)
-                .addField("New", event.getNewGlobalName() == null ? "None" : event.getNewGlobalName(), true)
-                .setFooter(event.getUser().getId(), event.getUser().getEffectiveAvatarUrl());
-
-        Channels.MEMBER_LOG.sendMessageEmbeds(embed.build()).queue();
-    }
-
     /* ---------------- HELPERS ---------------- */
-
-    @Override
-    public void onGuildMemberUpdateNickname(GuildMemberUpdateNicknameEvent event) {
-        EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Nickname Updated")
-                .addField("Old", event.getOldNickname() == null ? "None" : event.getOldNickname(), true)
-                .addField("New", event.getNewNickname() == null ? "None" : event.getNewNickname(), true)
-                .setFooter(event.getUser().getId(), event.getUser().getEffectiveAvatarUrl());
-
-        Channels.MEMBER_LOG.sendMessageEmbeds(embed.build()).queue();
-    }
 
     private void preloadMessages(TextChannel channel, Map<Long, Message> cache) {
         channel.getIterableHistory()
@@ -255,29 +183,4 @@ public class Logging extends ListenerAdapter {
         } catch (IOException ignored) {
         }
     }
-
-    private void logRoles(Member member, List<Role> roles, String title, Color color) {
-        if (Channels.MEMBER_LOG == null || roles.isEmpty()) return;
-
-        EmbedBuilder embed = new EmbedBuilder()
-                .setTitle(title)
-                .setColor(color)
-                .setDescription(member.getAsMention());
-
-        roles.forEach(r -> embed.appendDescription("\n• " + r.getAsMention()));
-        Channels.MEMBER_LOG.sendMessageEmbeds(embed.build()).queue();
-    }
-
-    private void logAvatar(String title, User user) {
-        if (Channels.MEMBER_LOG == null) return;
-
-        EmbedBuilder embed = new EmbedBuilder()
-                .setTitle(title)
-                .setImage(user.getEffectiveAvatarUrl())
-                .setFooter(user.getId(), user.getEffectiveAvatarUrl());
-
-        Channels.MEMBER_LOG.sendMessageEmbeds(embed.build()).queue();
-    }
-
-
 }

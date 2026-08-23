@@ -2,7 +2,6 @@ package com.dreggcake.src.Moderation;
 
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -18,6 +17,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.PermissionUtility;
+import com.dreggcake.src.Utility.GuildContext;
 
 public class Ban implements ICommand {
 
@@ -78,7 +79,7 @@ public class Ban implements ICommand {
                 : event.getOption("reason").getAsString();
 
         // Permission check
-        if(executer.getRoles().stream().noneMatch(ModUtility.getBanModStaff()::contains)){
+        if(executer.getRoles().stream().noneMatch(PermissionUtility.getBanModStaff()::contains)){
             event.reply("You do not have permission.").setEphemeral(true).queue();
             return;
         }
@@ -124,7 +125,7 @@ public class Ban implements ICommand {
             Member banny = event.getGuild().getMemberById(bannedId);
 
             if (banny == null) {
-                event.getGuild().ban(Main.jda.retrieveUserById(bannedId).complete(),
+                event.getGuild().ban(GuildContext.JDA.retrieveUserById(bannedId).complete(),
                         (int) deletionFrame, TimeUnit.SECONDS).queue();
 
             } else {
@@ -139,7 +140,7 @@ public class Ban implements ICommand {
                     return;
                 }
 
-                event.getGuild().ban(Main.jda.retrieveUserById(bannedId).complete(),
+                event.getGuild().ban(GuildContext.JDA.retrieveUserById(bannedId).complete(),
                         (int) deletionFrame, TimeUnit.SECONDS).queue();
             }
 

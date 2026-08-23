@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.entities.User;
  */
 public final class GuildContext {
 
+    public static JDA JDA;
+
     public static Guild GUILD;
 
     public static User DREGGCAKE;
@@ -19,6 +21,7 @@ public final class GuildContext {
     public static void init(JDA jda) {
         System.out.println("========== Initializing Discord Objects ==========");
 
+        JDA = jda;
         GUILD = ConfigResolver.guild(jda, "Guild.guildID");
         if (GUILD == null) {
             System.err.println("[FATAL] Guild is null. Bot cannot function.");

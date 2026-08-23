@@ -13,6 +13,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.PermissionUtility;
 
 public class ChangeBan implements ICommand {
 
@@ -41,7 +42,7 @@ public class ChangeBan implements ICommand {
         if (executer == null) return;
 
         // Permission check
-        if(executer.getRoles().stream().noneMatch(ModUtility.getChangeBanStaff()::contains)){
+        if(executer.getRoles().stream().noneMatch(PermissionUtility.getChangeBanStaff()::contains)){
             event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }

@@ -1,7 +1,7 @@
 package com.dreggcake.src.TicketSystem.Commands;
 
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Moderation.ModUtility;
+import com.dreggcake.src.Utility.PermissionUtility;
 import com.dreggcake.src.TicketSystem.TicketDAO;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -32,7 +32,7 @@ public class RenameTicket implements ICommand {
     public void execute(SlashCommandInteractionEvent event) {
         Member executer = event.getMember();
 
-        if (executer.getRoles().stream().noneMatch(ModUtility.getRenameTicketStaff()::contains)) {
+        if (executer.getRoles().stream().noneMatch(PermissionUtility.getRenameTicketStaff()::contains)) {
             event.reply("You do not have permission.").setEphemeral(true).queue();
             return;
         }

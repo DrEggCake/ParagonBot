@@ -1,6 +1,6 @@
 package com.dreggcake.src.TicketSystem.Commands;
 
-import com.dreggcake.src.Moderation.ModUtility;
+import com.dreggcake.src.Utility.PermissionUtility;
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -48,7 +48,7 @@ public class BlackListTicket implements ICommand {
         String time = event.getOption("duration").getAsString();
 
         // Permission check
-        if(executer.getRoles().stream().noneMatch(ModUtility.getBlacklistTicketStaff()::contains)){
+        if(executer.getRoles().stream().noneMatch(PermissionUtility.getBlacklistTicketStaff()::contains)){
             event.reply("You do not have permission.").setEphemeral(true).queue();
             return;
         }

@@ -1,6 +1,6 @@
 package com.dreggcake.src.InviteTracker;
 
-import com.dreggcake.src.Database.Databases;
+import com.dreggcake.src.Utility.Channels;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Member;
@@ -12,44 +12,15 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import com.dreggcake.src.Utility.Channels;
-
+/**
+ * Listens for invite/join events, attributes joins to invites
+ * and announces them in the invite log channel.
+ */
 public class InviteTracker extends ListenerAdapter {
 
-    private final Map<String, Invite> inviteCache = new HashMap<>();
+    private final InviteCache cache = new InviteCache();
+    private final InviteRepository repository = new InviteRepository();
     private Guild guild;
-
-
-    /* ================= DATABASE ================= */
-
-
-    private void saveInvite(String inviterId, String invitedId, String code) {
-
-
-        try {
-            Databases.getMainDatabase().update("INSERT INTO invites (" +
-                    "inviter_id, invited_id, invite_code, join_time" +
-                    ") VALUES (?, ?, ?, ?)", inviterId, invitedId, code, System.currentTimeMillis());
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /* ================= INVITE CACHE ================= */
-
-    public void cacheInvites() {
-        if (guild == null) return;
-        guild.retrieveInvites().queue(invites -> {
-            inviteCache.clear();
-            for (Invite invite : invites) {
-                inviteCache.put(invite.getCode(), invite);
-            }
-        });
-    }
 
     /* ================= EVENTS ================= */
 
@@ -67,20 +38,19 @@ public class InviteTracker extends ListenerAdapter {
             Invite used = null;
 
             for (Invite invite : invites) {
-                Invite old = inviteCache.get(invite.getCode());
-                if (old != null && invite.getUses() > old.getUses()) {
+                if (cache.isKnown(invite.getCode()) && invite.getUses() > cache.uses(invite.getCode())) {
                     used = invite;
                     break;
                 }
             }
 
-            TextChannel log = guild.getTextChannelById(Channels.INVITE_LOG.getId());
+            TextChannel log = Channels.INVITE_LOG;
             if (log == null) return;
 
             if (used != null && used.getInviter() != null) {
                 User inviter = used.getInviter();
 
-                saveInvite(inviter.getId(), member.getId(), used.getCode());
+                repository.save(inviter.getId(), member.getId(), used.getCode());
 
                 log.sendMessage(
                         "📥 **" + member.getUser().getAsTag() +
@@ -101,7 +71,8 @@ public class InviteTracker extends ListenerAdapter {
     public void onGuildInviteCreate(GuildInviteCreateEvent event) {
         cacheInvites();
         System.out.println("INVITE CREATED: " + event.getCode());
-        TextChannel log = event.getGuild().getTextChannelById(Channels.INVITE_LOG.getId());
+
+        TextChannel log = Channels.INVITE_LOG;
         if (log == null) return;
 
         Invite invite = event.getInvite();
@@ -120,7 +91,7 @@ public class InviteTracker extends ListenerAdapter {
         cacheInvites();
         System.out.println("INVITE DELETED: " + event.getCode());
 
-        TextChannel log = event.getGuild().getTextChannelById(Channels.INVITE_LOG.getId());
+        TextChannel log = Channels.INVITE_LOG;
         if (log == null) return;
 
         log.sendMessage(
@@ -129,4 +100,9 @@ public class InviteTracker extends ListenerAdapter {
         ).queue();
     }
 
+    /* ================= CACHE ================= */
+
+    public void cacheInvites() {
+        cache.refresh(guild);
+    }
 }

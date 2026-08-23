@@ -2,7 +2,6 @@ package com.dreggcake.src.Moderation;
 
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -14,6 +13,8 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.PermissionUtility;
+import com.dreggcake.src.Utility.GuildContext;
 
 public class Unban implements ICommand {
 
@@ -44,14 +45,14 @@ public class Unban implements ICommand {
         String reason = event.getOption("reason").getAsString();
 
         // Permission check
-        if(executer.getRoles().stream().noneMatch(ModUtility.getUnbanModStaff()::contains)){
+        if(executer.getRoles().stream().noneMatch(PermissionUtility.getUnbanModStaff()::contains)){
             event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }
 
         try {
             // Retrieve user
-            User bannedUser = Main.jda.retrieveUserById(userId).complete();
+            User bannedUser = GuildContext.JDA.retrieveUserById(userId).complete();
 
             if (bannedUser == null) {
                 event.reply("User not found.").setEphemeral(true).queue();

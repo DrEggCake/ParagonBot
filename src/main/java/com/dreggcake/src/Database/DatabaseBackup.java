@@ -1,19 +1,23 @@
 package com.dreggcake.src.Database;
 
-import com.dreggcake.src.Main;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import com.dreggcake.src.Utility.GuildContext;
 import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.io.File;
 import java.time.Instant;
-import com.dreggcake.src.Utility.GuildContext;
 
-public class DatabaseBackup extends ListenerAdapter implements Runnable {
-    private final JDA jda = Main.jda;
-    String filePath = "database.db";
+/**
+ * Sends a snapshot of one database file to the bot owner via DM.
+ */
+public class DatabaseBackup implements Runnable {
 
+    private final String filePath;
 
+    public DatabaseBackup(String filePath) {
+        this.filePath = filePath;
+    }
+
+    @Override
     public void run() {
         GuildContext.DREGGCAKE.openPrivateChannel().queue((channel) -> {
             File databaseFile = new File(filePath);
@@ -24,10 +28,8 @@ public class DatabaseBackup extends ListenerAdapter implements Runnable {
 
                 channel.sendMessage(message).addFiles(FileUpload.fromData(databaseFile)).queue();
             } else {
-                channel.sendMessage("DAO not found.").queue();
+                channel.sendMessage("Backup failed: file not found: " + filePath).queue();
             }
-
         });
     }
-
 }

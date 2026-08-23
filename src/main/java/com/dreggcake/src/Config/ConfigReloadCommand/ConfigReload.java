@@ -1,6 +1,7 @@
 package com.dreggcake.src.Config.ConfigReloadCommand;
 
 import com.dreggcake.src.Config.Config;
+import com.dreggcake.src.Utility.PermissionUtility;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -13,7 +14,7 @@ public class ConfigReload extends ListenerAdapter {
 
         if (event.getAuthor().isBot()) return;
         if (event.getMessage().getContentStripped().equals("!reload")) {
-            if (!PermissionUtil.canManageConfig(member)) {
+            if (!PermissionUtility.canManageConfig(member)) {
 //                event.getMessage().reply("You do not have the required role").queue();
                 return;
             }

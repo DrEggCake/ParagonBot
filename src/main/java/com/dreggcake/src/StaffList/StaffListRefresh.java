@@ -1,12 +1,12 @@
 package com.dreggcake.src.StaffList;
 
-import com.dreggcake.src.Main;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
 import java.util.List;
 import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.GuildContext;
 
 public class StaffListRefresh implements Runnable {
     @Override
@@ -14,7 +14,7 @@ public class StaffListRefresh implements Runnable {
         TextChannel staffListChannel = Channels.STAFF_LIST;
         StaffListBuild staffListBuild = new StaffListBuild();
 
-        long selfId = Main.jda.getSelfUser().getIdLong();
+        long selfId = GuildContext.JDA.getSelfUser().getIdLong();
 
         staffListChannel.getHistory().retrievePast(100).queue(history -> {
 

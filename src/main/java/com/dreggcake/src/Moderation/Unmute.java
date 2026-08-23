@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.dreggcake.src.Utility.Channels;
 import com.dreggcake.src.Utility.Roles;
+import com.dreggcake.src.Utility.PermissionUtility;
 
 public class Unmute implements ICommand {
 
@@ -42,7 +43,7 @@ public class Unmute implements ICommand {
         if (executer == null) return;
 
         // Permission check
-        if(executer.getRoles().stream().noneMatch(ModUtility.getUnmuteModStaff()::contains)){
+        if(executer.getRoles().stream().noneMatch(PermissionUtility.getUnmuteModStaff()::contains)){
             event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }

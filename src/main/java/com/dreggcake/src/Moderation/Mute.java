@@ -21,6 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import com.dreggcake.src.Utility.Channels;
 import com.dreggcake.src.Utility.Roles;
+import com.dreggcake.src.Utility.PermissionUtility;
 
 public class Mute implements ICommand {
 
@@ -66,7 +67,7 @@ public class Mute implements ICommand {
                 : event.getOption("reason").getAsString();
 
         // Permission check
-        if(executer.getRoles().stream().noneMatch(ModUtility.getMuteModStaff()::contains)){
+        if(executer.getRoles().stream().noneMatch(PermissionUtility.getMuteModStaff()::contains)){
             event.reply("No permissions.").setEphemeral(true).queue();
             return;
         }

@@ -13,8 +13,8 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import java.awt.*;
 import java.util.List;
 
-import static com.dreggcake.src.Main.jda;
 import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.GuildContext;
 import com.dreggcake.src.Utility.Roles;
 
 public class UnbanForce implements ICommand {
@@ -81,7 +81,7 @@ public class UnbanForce implements ICommand {
     }
 
     private EmbedBuilder successEmbed(Member member, String userId, String reason) {
-        User bannedUser = jda.getUserById(userId);
+        User bannedUser = GuildContext.JDA.getUserById(userId);
         String userTag = (bannedUser != null)
                 ? bannedUser.getAsTag()
                 : "Unknown User";

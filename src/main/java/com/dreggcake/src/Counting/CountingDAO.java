@@ -8,8 +8,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import com.dreggcake.src.Utility.GuildContext;
 
-import static com.dreggcake.src.Main.jda;
 
 public class CountingDAO {
 
@@ -64,7 +64,7 @@ public class CountingDAO {
 
                         while (rs.next()) {
                             long channelId = rs.getLong("channel_id");
-                            TextChannel channel = jda.getTextChannelById(channelId);
+                            TextChannel channel = GuildContext.JDA.getTextChannelById(channelId);
 
                             CountingState state = new CountingState(channelId, channel);
                             state.setCurrent(rs.getLong("current_number"));

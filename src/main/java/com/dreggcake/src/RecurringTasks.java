@@ -1,6 +1,5 @@
 package com.dreggcake.src;
 
-import com.dreggcake.src.Counting.CountingDatabaseBackup;
 import com.dreggcake.src.Database.DatabaseBackup;
 import com.dreggcake.src.InviteTracker.InviteTracker;
 import com.dreggcake.src.Media.Auto.AutoMediaRankRemove;
@@ -26,8 +25,8 @@ public final class RecurringTasks {
 
         scheduler.scheduleWithFixedDelay(new autoUnban(), 10, 10, TimeUnit.MINUTES);
         scheduler.scheduleWithFixedDelay(new autoUnmute(), 10, 20, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(new DatabaseBackup(), 10, 3600, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(new CountingDatabaseBackup(), 10, 3600, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(new DatabaseBackup("database.db"), 10, 3600, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(new DatabaseBackup("counting.db"), 10, 3600, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(new autoUnblacklistTicket(), 10, 10, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(Main.INVITE_TRACKER::cacheInvites, 10, 10, TimeUnit.SECONDS);
         scheduler.scheduleAtFixedRate(new Main.ActivityChanger(), 0L, 5L, TimeUnit.SECONDS);

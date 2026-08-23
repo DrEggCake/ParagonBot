@@ -1,7 +1,6 @@
 package com.dreggcake.src.Media.Auto;
 
 import com.dreggcake.src.Database.Databases;
-import com.dreggcake.src.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.dreggcake.src.Utility.Channels;
 import com.dreggcake.src.Utility.Roles;
+import com.dreggcake.src.Utility.GuildContext;
 
 public class AutoMediaRankRemove implements Runnable {
 
@@ -36,7 +36,7 @@ public class AutoMediaRankRemove implements Runnable {
 
             if (expiredUsers.isEmpty()) return;
 
-            Guild guild = Main.jda.getGuilds().get(0); // safer than getFirst()
+            Guild guild = GuildContext.JDA.getGuilds().get(0); // safer than getFirst()
 
             for (long userId : expiredUsers) {
                 Member member = guild.getMemberById(userId);

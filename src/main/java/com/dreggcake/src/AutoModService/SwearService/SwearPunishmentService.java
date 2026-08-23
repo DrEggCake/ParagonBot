@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import com.dreggcake.src.Utility.Channels;
 import com.dreggcake.src.Utility.Roles;
+import com.dreggcake.src.Utility.GuildContext;
 
 public final class SwearPunishmentService {
 
@@ -52,7 +53,7 @@ public final class SwearPunishmentService {
         //  Repeat offense within 10 minutes → mute user
         warningCache.remove(userId);
         addMutedRole(member);
-        insertMuteIntoDatabase(Main.jda,member, MUTE_DURATION_MS);
+        insertMuteIntoDatabase(GuildContext.JDA,member, MUTE_DURATION_MS);
         sendMuteEmbed(message.getChannel().asTextChannel(), member);
         sendMuteEmbed(Channels.PUNISHMENT_LOG,member);
     }
