@@ -14,12 +14,12 @@ import java.util.List;
 /**
  * Builds the shared vote/store reminder embed and its link buttons.
  */
-final class VoteEmbeds {
+public final class VoteEmbeds {
 
     private VoteEmbeds() {
     }
 
-    static MessageEmbed embed() {
+    public static MessageEmbed embed() {
         List<String> voteLinks = voteLinks();
 
         EmbedBuilder embed = new EmbedBuilder()
@@ -60,8 +60,9 @@ final class VoteEmbeds {
 
     /**
      * Buttons chunked into action rows of five (Discord limit).
+     * One button per configured voting link, store button at the end.
      */
-    static List<ActionRow> rows() {
+    public static List<ActionRow> rows() {
         List<Button> buttons = buttons();
         List<ActionRow> rows = new ArrayList<>();
         for (int i = 0; i < buttons.size(); i += 5) {
