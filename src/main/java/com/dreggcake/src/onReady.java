@@ -97,7 +97,7 @@ public class onReady extends ListenerAdapter {
         stmt.execute("""
             CREATE TABLE IF NOT EXISTS tickets (
                 ticketid TEXT PRIMARY KEY,
-                userid TEXT NOT NULL UNIQUE,
+                userid TEXT NOT NULL,
                 created_at INTEGER
             )
         """);
