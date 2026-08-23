@@ -9,12 +9,17 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.utils.TimeFormat;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Periodic scan over all open tickets:
  * - silent tickets (no messages) are scheduled to auto-close 12h after 6h of silence
  * - conversations without any staff reply get a staff ping every 6h after 24h of silence
+ * - tickets disabled via !autoClose are skipped
+ * <p>
+ * All state is persisted in the ticket_autoclose table.
  */
 public class AutoCloseService implements Runnable {
 
@@ -24,81 +29,58 @@ public class AutoCloseService implements Runnable {
     private static final long STAFF_IGNORE_THRESHOLD = TimeUnit.HOURS.toMillis(24);
     private static final long STAFF_PING_INTERVAL = TimeUnit.HOURS.toMillis(6);
 
-    private static boolean enabled = true;
-
-    private static final AutoCloseService INSTANCE = new AutoCloseService();
-
-    private final TicketActivityTracker tracker = new TicketActivityTracker();
-
-    public static AutoCloseService get() {
-        return INSTANCE;
-    }
-
-    public static boolean isEnabled() {
-        return enabled;
-    }
-
-    public static boolean toggle() {
-        enabled = !enabled;
-        return enabled;
-    }
-
-    TicketActivityTracker tracker() {
-        return tracker;
-    }
-
-    void recordActivity(long channelId, boolean staff) {
-        tracker.record(channelId, staff, System.currentTimeMillis());
-    }
-
     @Override
     public void run() {
-        if (!enabled) return;
-
         long now = System.currentTimeMillis();
+        Set<Long> openChannelIds = new HashSet<>();
 
         for (TicketDAO.OpenTicket ticket : TicketDAO.loadAllOpen()) {
+            openChannelIds.add(ticket.channelId());
+
             TextChannel channel = GuildContext.JDA.getTextChannelById(ticket.channelId());
             if (channel == null) {
-                tracker.remove(ticket.channelId());
+                AutoCloseDAO.delete(ticket.channelId());
                 continue;
             }
 
-            TicketActivityTracker.Activity activity =
-                    tracker.getOrCreate(ticket.channelId(), ticket.createdAt());
+            AutoCloseDAO.StateRow state = AutoCloseDAO.ensure(ticket.channelId(), ticket.createdAt());
+            if (state.disabled()) continue;
 
-            synchronized (activity) {
-                if (!activity.hasConversation()) {
-                    handleSilentTicket(channel, activity, now);
-                } else {
-                    handleUnansweredTicket(channel, activity, now);
-                }
-            }
+            synchronizedState(channel, state, now);
+        }
+
+        cleanupOrphans(openChannelIds);
+    }
+
+    private void synchronizedState(TextChannel channel, AutoCloseDAO.StateRow state, long now) {
+        if (!state.hasConversation()) {
+            handleSilentTicket(channel, state, now);
+        } else {
+            handleUnansweredTicket(channel, state, now);
         }
     }
 
     /* ================= Rule 1: dead ticket ================= */
 
-    private void handleSilentTicket(TextChannel channel, TicketActivityTracker.Activity activity, long now) {
-        if (activity.scheduledCloseAt == null) {
-            if (now - activity.lastMessageAt < SILENCE_THRESHOLD) return;
+    private void handleSilentTicket(TextChannel channel, AutoCloseDAO.StateRow state, long now) {
+        if (state.scheduledCloseAt() == null) {
+            if (now - state.lastMessageAt() < SILENCE_THRESHOLD) return;
 
-            activity.scheduledCloseAt = now + CLOSE_HORIZON;
+            AutoCloseDAO.save(withScheduled(state, now + CLOSE_HORIZON));
 
             channel.sendMessageEmbeds(new EmbedBuilder()
                     .setTitle("Ticket scheduled for automatic closure")
                     .setDescription(
                             "This ticket had no activity for **6 hours**.\n" +
-                                    "It will be closed " + TimeFormat.RELATIVE.format(activity.scheduledCloseAt) + ".\n\n" +
+                                    "It will be closed " + TimeFormat.RELATIVE.format(now + CLOSE_HORIZON) + ".\n\n" +
                                     "*Sending any message will cancel this.*")
                     .setColor(Color.ORANGE)
                     .build()).queue();
             return;
         }
 
-        if (now >= activity.scheduledCloseAt) {
-            long channelId = channel.getIdLong();
-            tracker.remove(channelId);
+        if (now >= state.scheduledCloseAt()) {
+            AutoCloseDAO.delete(channel.getIdLong());
             TicketCloser.close(channel, "AutoClose (no activity)",
                     "This ticket was closed automatically because it had no activity.", 10);
         }
@@ -106,25 +88,47 @@ public class AutoCloseService implements Runnable {
 
     /* ================= Rule 2: staff never answered ================= */
 
-    private void handleUnansweredTicket(TextChannel channel, TicketActivityTracker.Activity activity, long now) {
-        boolean userWaiting = activity.lastUserMessageAt > 0
-                && now - activity.lastUserMessageAt >= STAFF_IGNORE_THRESHOLD
-                && (activity.lastStaffMessageAt < 0 || activity.lastStaffMessageAt < activity.lastUserMessageAt);
+    private void handleUnansweredTicket(TextChannel channel, AutoCloseDAO.StateRow state, long now) {
+        boolean userWaiting = state.lastUserMessageAt() > 0
+                && now - state.lastUserMessageAt() >= STAFF_IGNORE_THRESHOLD
+                && (state.lastStaffMessageAt() < 0 || state.lastStaffMessageAt() < state.lastUserMessageAt());
 
         if (!userWaiting || Roles.STAFF == null) return;
-        if (now < activity.nextStaffPingAt) return;
+        if (now < state.nextStaffPingAt()) return;
 
-        activity.nextStaffPingAt = now + STAFF_PING_INTERVAL;
+        AutoCloseDAO.save(new AutoCloseDAO.StateRow(
+                state.channelId(), state.disabled(), state.messageCount(), state.lastMessageAt(),
+                state.lastUserMessageAt(), state.lastStaffMessageAt(), state.scheduledCloseAt(),
+                now + STAFF_PING_INTERVAL));
 
         channel.sendMessage(Roles.STAFF.getAsMention())
                 .addEmbeds(new EmbedBuilder()
                         .setTitle("Staff response needed")
                         .setDescription(
                                 "This ticket has been waiting for a staff reply since " +
-                                        TimeFormat.RELATIVE.format(activity.lastUserMessageAt) + ".\n" +
+                                        TimeFormat.RELATIVE.format(state.lastUserMessageAt()) + ".\n" +
                                         "Staff will be reminded every **6 hours** until someone responds.")
                         .setColor(Color.YELLOW)
                         .build())
                 .queue();
+    }
+
+    /* ================= Helpers ================= */
+
+    /**
+     * Removes state rows whose ticket no longer exists (closed manually etc.).
+     */
+    private void cleanupOrphans(Set<Long> openChannelIds) {
+        for (AutoCloseDAO.StateRow row : AutoCloseDAO.loadAll()) {
+            if (!openChannelIds.contains(row.channelId())) {
+                AutoCloseDAO.delete(row.channelId());
+            }
+        }
+    }
+
+    private AutoCloseDAO.StateRow withScheduled(AutoCloseDAO.StateRow state, long closeAt) {
+        return new AutoCloseDAO.StateRow(
+                state.channelId(), state.disabled(), state.messageCount(), state.lastMessageAt(),
+                state.lastUserMessageAt(), state.lastStaffMessageAt(), closeAt, state.nextStaffPingAt());
     }
 }

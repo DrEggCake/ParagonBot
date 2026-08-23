@@ -35,11 +35,11 @@ public final class RecurringTasks {
         scheduler.scheduleAtFixedRate(new StaffListRefresh(), 0, 24, TimeUnit.HOURS);
         scheduler.scheduleAtFixedRate(new AutoMediaRankRemove(), 0, 10, TimeUnit.MINUTES);
 
-        // TicketSystem.AutoBot: periodic ticket activity scan
-        scheduler.scheduleWithFixedDelay(AutoCloseService.get(), 1, 10, TimeUnit.MINUTES);
+        // TicketSystem.AutoBot: periodic ticket activity scan (state persisted in DB)
+        scheduler.scheduleWithFixedDelay(new AutoCloseService(), 1, 10, TimeUnit.MINUTES);
 
-        // Miscellaneous: recurring vote reminder
-        scheduler.scheduleAtFixedRate(new VoteReminder(),
-                VoteReminder.INTERVAL, VoteReminder.INTERVAL, TimeUnit.HOURS);
+        // Miscellaneous: vote reminder at fixed clock hours (00:00, 06:00, 12:00, ...)
+        long period = TimeUnit.HOURS.toMillis(VoteReminder.INTERVAL_HOURS);
+        scheduler.scheduleAtFixedRate(new VoteReminder(), VoteReminder.initialDelayMillis(), period, TimeUnit.MILLISECONDS);
     }
 }

@@ -44,6 +44,18 @@ final class MainDatabaseSchema {
                     PRIMARY KEY (guild_id, gamemode)
                 )
             """);
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS ticket_autoclose (
+                    channel_id INTEGER PRIMARY KEY,
+                    disabled INTEGER NOT NULL DEFAULT 0,
+                    message_count INTEGER NOT NULL DEFAULT 0,
+                    last_message_at INTEGER NOT NULL,
+                    last_user_message_at INTEGER NOT NULL DEFAULT -1,
+                    last_staff_message_at INTEGER NOT NULL DEFAULT -1,
+                    scheduled_close_at INTEGER,
+                    next_staff_ping_at INTEGER NOT NULL DEFAULT 0
+                )
+            """);
 
         }
     }

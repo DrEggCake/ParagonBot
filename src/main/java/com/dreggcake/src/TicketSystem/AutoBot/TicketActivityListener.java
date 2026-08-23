@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.awt.*;
 
 /**
- * Feeds live ticket messages into the AutoClose activity tracker and
+ * Feeds live ticket messages into the persisted AutoClose state and
  * announces cancelled auto-closes.
  */
 public class TicketActivityListener extends ListenerAdapter {
@@ -24,7 +24,9 @@ public class TicketActivityListener extends ListenerAdapter {
         long channelId = event.getChannel().getIdLong();
         if (!TicketDAO.isTicket(channelId)) return;
 
-        if (AutoCloseService.get().tracker().cancelScheduledClose(channelId)) {
+        long now = System.currentTimeMillis();
+
+        if (AutoCloseDAO.clearScheduledClose(channelId)) {
             event.getChannel().sendMessageEmbeds(new EmbedBuilder()
                     .setTitle("Automatic closure cancelled")
                     .setDescription("Someone is still here — the scheduled auto-close was cancelled.")
@@ -32,7 +34,18 @@ public class TicketActivityListener extends ListenerAdapter {
                     .build()).queue();
         }
 
+        AutoCloseDAO.StateRow state = AutoCloseDAO.ensure(channelId, now);
         boolean staff = member.getRoles().contains(Roles.STAFF);
-        AutoCloseService.get().recordActivity(channelId, staff);
+
+        AutoCloseDAO.save(new AutoCloseDAO.StateRow(
+                channelId,
+                state.disabled(),
+                state.messageCount() + 1,
+                now,
+                staff ? state.lastUserMessageAt() : now,
+                staff ? now : state.lastStaffMessageAt(),
+                state.scheduledCloseAt(),
+                0
+        ));
     }
 }
