@@ -2,7 +2,7 @@ package com.dreggcake.src.Media.Auto;
 
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;

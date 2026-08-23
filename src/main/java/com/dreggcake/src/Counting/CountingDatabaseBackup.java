@@ -1,6 +1,6 @@
 package com.dreggcake.src.Counting;
 
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
 

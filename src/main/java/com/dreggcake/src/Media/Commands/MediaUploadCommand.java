@@ -2,7 +2,7 @@ package com.dreggcake.src.Media.Commands;
 
 import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Media.MediaPermissions;
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;

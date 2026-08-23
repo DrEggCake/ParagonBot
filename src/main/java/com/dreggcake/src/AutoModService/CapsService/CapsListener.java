@@ -3,7 +3,7 @@ package com.dreggcake.src.AutoModService.CapsService;
 import com.dreggcake.src.AutoModService.Common.AutoModBypassService;
 import com.dreggcake.src.AutoModService.Common.AutoModCategoryBypassService;
 import com.dreggcake.src.AutoModService.Common.AutoModChannelBypassService;
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;

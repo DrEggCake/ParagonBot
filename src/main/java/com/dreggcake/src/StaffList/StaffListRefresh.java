@@ -1,7 +1,7 @@
 package com.dreggcake.src.StaffList;
 
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;

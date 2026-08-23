@@ -1,8 +1,7 @@
 package com.dreggcake.src.AutoModService.Common;
 
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
-import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 import java.util.Set;
 

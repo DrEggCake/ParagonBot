@@ -1,6 +1,6 @@
 package com.dreggcake.src.TicketSystem;
 
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 

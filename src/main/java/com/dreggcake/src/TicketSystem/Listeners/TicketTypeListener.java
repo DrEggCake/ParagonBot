@@ -2,7 +2,7 @@ package com.dreggcake.src.TicketSystem.Listeners;
 
 import com.dreggcake.src.TicketSystem.TicketDAO;
 import com.dreggcake.src.TicketSystem.TicketType;
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

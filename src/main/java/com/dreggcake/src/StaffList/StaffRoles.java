@@ -1,6 +1,6 @@
 package com.dreggcake.src.StaffList;
 
-import com.dreggcake.src.Utilities;
+import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Role;
 
 import java.util.List;

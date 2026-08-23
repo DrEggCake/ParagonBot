@@ -1,6 +1,6 @@
 package com.dreggcake.src;
 
-import com.dreggcake.src.Listeners.InviteTracker;
+import com.dreggcake.src.InviteTracker.InviteTracker;
 
 public class InviteCache implements Runnable {
 
