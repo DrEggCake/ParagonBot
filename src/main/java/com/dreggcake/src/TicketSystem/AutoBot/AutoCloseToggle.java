@@ -35,11 +35,11 @@ public class AutoCloseToggle extends ListenerAdapter {
 
         if (state.disabled()) {
             AutoCloseDAO.save(state.withDisabled(false, System.currentTimeMillis()));
-            event.getMessage().reply("Auto close is now **ENABLED** for this ticket.").queue();
+            event.getMessage().reply("Auto close is now **ENABLED**.").queue();
         } else {
             AutoCloseDAO.save(state.withDisabled(true, System.currentTimeMillis()));
             event.getMessage()
-                    .reply("Auto close is now **DISABLED** for this ticket — it will not be closed automatically.")
+                    .reply("Auto close is now **DISABLED**.")
                     .queue();
         }
     }
