@@ -45,11 +45,6 @@ final class MainDatabaseSchema {
                 )
             """);
 
-            stmt.execute("""
-                    CREATE TABLE IF NOT EXISTS tickets_auto (
-                    
-                    )
-                    """);
         }
     }
 }
