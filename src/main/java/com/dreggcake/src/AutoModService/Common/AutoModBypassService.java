@@ -1,18 +1,18 @@
 package com.dreggcake.src.AutoModService.Common;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 
 import java.util.Set;
+import com.dreggcake.src.Utility.Roles;
 
 public class AutoModBypassService {
 
     // Roles that bypass automod service
     private static final Set<Long> BYPASS_ROLE_IDS = Set.of(
-            Utilities.STAFF_ROLE.getIdLong(),
-            Utilities.PARTNER_ROLE.getIdLong()
+            Roles.STAFF.getIdLong(),
+            Roles.PARTNER.getIdLong()
     );
 
     private AutoModBypassService() {

@@ -10,7 +10,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.dreggcake.src.Utility.Utilities.DREGGCAKE;
+import static com.dreggcake.src.Utility.GuildContext.DREGGCAKE;
 
 public class Set extends ListenerAdapter {
 

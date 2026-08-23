@@ -1,6 +1,5 @@
 package com.dreggcake.src.StaffList;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.components.container.Container;
@@ -14,6 +13,7 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.dreggcake.src.Utility.GuildContext;
 
 public class StaffListBuild {
 
@@ -122,7 +122,7 @@ public class StaffListBuild {
     }
 
     private void retrieveStaffMembers() {
-        for (Member member : Utilities.GUILD.getMembers()) {
+        for (Member member : GuildContext.GUILD.getMembers()) {
             if (member.getRoles().contains(staffRoles.getStaffRole())) {
                 staffMembers.add(member);
             }

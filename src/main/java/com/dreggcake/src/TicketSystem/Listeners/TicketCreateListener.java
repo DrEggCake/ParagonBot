@@ -1,7 +1,6 @@
 package com.dreggcake.src.TicketSystem.Listeners;
 
 import com.dreggcake.src.TicketSystem.*;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
@@ -12,6 +11,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
 import java.util.EnumSet;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class TicketCreateListener extends ListenerAdapter {
 
@@ -52,7 +53,7 @@ public class TicketCreateListener extends ListenerAdapter {
                 .addOption("Password Support", TicketType.PASSWORD.getId(), TicketEmojis.PASSWORD)
                 .build();
 
-        Utilities.TICKET_CATEGORY
+        Channels.TICKET_CATEGORY
                 .createTextChannel("ticket-" + member.getUser().getName())
                 .addPermissionOverride(
                         member.getGuild().getPublicRole(),
@@ -70,7 +71,7 @@ public class TicketCreateListener extends ListenerAdapter {
                         EnumSet.of(Permission.MESSAGE_SEND)
                 )
                 .addPermissionOverride(
-                        Utilities.STAFF_ROLE,
+                        Roles.STAFF,
                         EnumSet.of(
                                 Permission.VIEW_CHANNEL,
                                 Permission.MESSAGE_SEND,
@@ -81,12 +82,12 @@ public class TicketCreateListener extends ListenerAdapter {
                         null
                 )
                 .addPermissionOverride(
-                        Utilities.BUILDER_ROLE,
+                        Roles.BUILDER,
                         null,
                         EnumSet.of(Permission.VIEW_CHANNEL)
                 )
                 .addPermissionOverride(
-                        Utilities.BOSS_DESIGNER_ROLE,
+                        Roles.BOSS_DESIGNER,
                         null,
                         EnumSet.of(Permission.VIEW_CHANNEL)
                 )

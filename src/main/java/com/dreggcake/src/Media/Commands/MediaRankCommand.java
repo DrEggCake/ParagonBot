@@ -3,7 +3,6 @@ package com.dreggcake.src.Media.Commands;
 import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Media.Logic.MediaDAO;
 import com.dreggcake.src.Media.MediaPermissions;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -13,6 +12,8 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.awt.*;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class MediaRankCommand implements ICommand {
     @Override
@@ -59,19 +60,19 @@ public class MediaRankCommand implements ICommand {
 
         switch (roleType) {
             case "creator1":
-                role = Utilities.CONTENT_CREATOR_1_ROLE;
+                role = Roles.CONTENT_CREATOR_1;
                 break;
             case "creator2":
-                role = Utilities.CONTENT_CREATOR_2_ROLE;
+                role = Roles.CONTENT_CREATOR_2;
                 break;
             case "creator3":
-                role = Utilities.CONTENT_CREATOR_3_ROLE;
+                role = Roles.CONTENT_CREATOR_3;
                 break;
             case "creator4":
-                role = Utilities.CONTENT_CREATOR_4_ROLE;
+                role = Roles.CONTENT_CREATOR_4;
                 break;
             case "partner":
-                role = Utilities.PARTNER_ROLE;
+                role = Roles.PARTNER;
                 break;
             default:
                 event.reply("Invalid role selection.")
@@ -111,7 +112,7 @@ public class MediaRankCommand implements ICommand {
         embed.addField("Staff", event.getMember().getAsMention(), true);
         embed.addField("Target", target.getAsMention(), true);
         embed.setColor(Color.RED);
-        Utilities.MEDIA_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
+        Channels.MEDIA_LOG.sendMessageEmbeds(embed.build()).queue();
 
     }
 
@@ -138,7 +139,7 @@ public class MediaRankCommand implements ICommand {
         embed.addField("Staff", event.getMember().getAsMention(), true);
         embed.addField("Target", target.getAsMention(), true);
         embed.setColor(Color.BLUE);
-        Utilities.MEDIA_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
+        Channels.MEDIA_LOG.sendMessageEmbeds(embed.build()).queue();
     }
 
     private long parseTimeToSeconds(String time) {

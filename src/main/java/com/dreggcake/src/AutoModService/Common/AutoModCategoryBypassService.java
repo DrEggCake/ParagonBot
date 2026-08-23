@@ -1,17 +1,17 @@
 package com.dreggcake.src.AutoModService.Common;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 
 import java.util.Set;
+import com.dreggcake.src.Utility.Channels;
 
 public final class AutoModCategoryBypassService {
 
     // Channels where AutoMod should NOT apply
     // e.g. counting, spam, bot-commands
     private static final Set<Long> BYPASS_CATEGORY_IDS = Set.of(
-            Utilities.TICKET_CATEGORY.getIdLong(),
-            Utilities.STAFF_LOGS.getIdLong()
+            Channels.TICKET_CATEGORY.getIdLong(),
+            Channels.STAFF_LOGS_CATEGORY.getIdLong()
     );
 
     private AutoModCategoryBypassService() {

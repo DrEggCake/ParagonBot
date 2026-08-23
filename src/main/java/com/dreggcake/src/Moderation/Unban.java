@@ -3,7 +3,6 @@ package com.dreggcake.src.Moderation;
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -14,6 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
 
 public class Unban implements ICommand {
 
@@ -97,8 +97,8 @@ public class Unban implements ICommand {
 
             // Reply + log
             event.replyEmbeds(logEmbed.build()).queue(msg -> {
-                if (Utilities.PUNISHMENT_LOG_CHANNEL_ID != null) {
-                    Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                if (Channels.PUNISHMENT_LOG != null) {
+                    Channels.PUNISHMENT_LOG
                             .sendMessageEmbeds(logEmbed.build())
                             .queue();
                 }

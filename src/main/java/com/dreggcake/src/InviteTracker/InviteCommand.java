@@ -1,7 +1,6 @@
 package com.dreggcake.src.InviteTracker;
 
 import com.dreggcake.src.Database.Databases;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -9,6 +8,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.dreggcake.src.Utility.Roles;
 
 public class InviteCommand extends ListenerAdapter {
 
@@ -24,8 +24,8 @@ public class InviteCommand extends ListenerAdapter {
         // Role check (cleaned up)
         boolean hasPerm = member.getRoles().stream()
                 .anyMatch(role ->
-                        role.equals(Utilities.STAFF_ROLE) ||
-                                role.getPosition() >= Utilities.STAFF_ROLE.getPosition()
+                        role.equals(Roles.STAFF) ||
+                                role.getPosition() >= Roles.STAFF.getPosition()
                 );
 
         if (!hasPerm) return;

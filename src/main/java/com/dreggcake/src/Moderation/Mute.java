@@ -2,7 +2,6 @@ package com.dreggcake.src.Moderation;
 
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -20,6 +19,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class Mute implements ICommand {
 
@@ -92,7 +93,7 @@ public class Mute implements ICommand {
                         : targetMember.getRoles().get(0);
 
                 if (mutedHighest != null
-                        && mutedHighest.getPosition() >= Utilities.SUPPORT_ROLE.getPosition()) {
+                        && mutedHighest.getPosition() >= Roles.SUPPORT.getPosition()) {
 
                     event.reply("I can't mute that user, check my roles and permissions.")
                             .setEphemeral(true).queue();
@@ -101,7 +102,7 @@ public class Mute implements ICommand {
             }
 
             // Apply mute role
-            event.getGuild().addRoleToMember(muted, Utilities.MUTED_ROLE).queue(
+            event.getGuild().addRoleToMember(muted, Roles.MUTED).queue(
                     success -> {},
                     failure -> event.getChannel()
                             .sendMessage("Error muting: " + failure.getMessage())
@@ -128,7 +129,7 @@ public class Mute implements ICommand {
             replyEmbed.setColor(Color.RED);
 
             event.replyEmbeds(replyEmbed.build()).queue(msg ->
-                    Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                    Channels.PUNISHMENT_LOG
                             .sendMessageEmbeds(replyEmbed.build()).queue()
             );
 

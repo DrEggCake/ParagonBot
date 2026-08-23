@@ -48,13 +48,14 @@ public class Main extends ListenerAdapter {
 
     public static JDA jda;
     public static Connection conn;
+    public static final InviteTracker INVITE_TRACKER = new InviteTracker();
 
 
     public static void main(String[] args) throws IOException {
         Config.load();
 
         jda = JDABuilder.create(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES).setToken(Config.getString("bot.id", "")).build();
-        jda.addEventListener(new onReady());
+        jda.addEventListener(new BotStartupListener());
         jda.addEventListener(new Welcome());
 
         jda.addEventListener(new TicketCreateListener());
@@ -67,7 +68,7 @@ public class Main extends ListenerAdapter {
         jda.addEventListener(new Store());
         jda.addEventListener(new Set());
         jda.addEventListener(new InviteCommand());
-        jda.addEventListener(new InviteTracker());
+        jda.addEventListener(INVITE_TRACKER);
         jda.addEventListener(new CountingListener());
         jda.addEventListener(new CountingCommandsListener());
         jda.addEventListener(new AttachmentListener());

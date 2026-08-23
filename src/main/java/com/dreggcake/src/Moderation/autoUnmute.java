@@ -1,7 +1,6 @@
 package com.dreggcake.src.Moderation;
 
 import com.dreggcake.src.Database.Databases;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -12,6 +11,9 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.GuildContext;
+import com.dreggcake.src.Utility.Roles;
 
 public class autoUnmute extends ListenerAdapter implements Runnable {
 
@@ -40,15 +42,15 @@ public class autoUnmute extends ListenerAdapter implements Runnable {
 
             for (MuteRecord record : records) {
 
-                if (Utilities.GUILD == null) continue;
+                if (GuildContext.GUILD == null) continue;
 
-                Role muteRole = Utilities.MUTED_ROLE;
-                TextChannel logChannel = Utilities.PUNISHMENT_LOG_CHANNEL_ID;
+                Role muteRole = Roles.MUTED;
+                TextChannel logChannel = Channels.PUNISHMENT_LOG;
 
-                Member member = Utilities.GUILD.getMemberById(record.userId);
+                Member member = GuildContext.GUILD.getMemberById(record.userId);
 
                 if (member != null && muteRole != null) {
-                    Utilities.GUILD.removeRoleFromMember(member, muteRole).queue();
+                    GuildContext.GUILD.removeRoleFromMember(member, muteRole).queue();
 
                     sendUnmuteLog(
                             member.getUser().getAsTag(),

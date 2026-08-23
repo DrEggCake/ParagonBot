@@ -1,6 +1,5 @@
 package com.dreggcake.src.Logging;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -26,6 +25,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import com.dreggcake.src.Utility.Channels;
 
 public class Logging extends ListenerAdapter {
 
@@ -85,7 +85,7 @@ public class Logging extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(MessageDeleteEvent event) {
-        if (Utilities.MESSAGES_LOG_CHANNEL == null) return;
+        if (Channels.MESSAGES_LOG == null) return;
 
         Map<Long, Message> cache = MESSAGE_CACHE.get(event.getChannel().getIdLong());
         if (cache == null) return;
@@ -119,7 +119,7 @@ public class Logging extends ListenerAdapter {
 
     @Override
     public void onMessageUpdate(MessageUpdateEvent event) {
-        if (Utilities.MESSAGES_LOG_CHANNEL == null) return;
+        if (Channels.MESSAGES_LOG == null) return;
         if (event.getMessage().getAuthor().isBot()) return;
 
         Map<Long, Message> cache = MESSAGE_CACHE
@@ -183,7 +183,7 @@ public class Logging extends ListenerAdapter {
                 .addField("New", event.getNewGlobalName() == null ? "None" : event.getNewGlobalName(), true)
                 .setFooter(event.getUser().getId(), event.getUser().getEffectiveAvatarUrl());
 
-        Utilities.MEMBER_LOG_CHANNEL_ID.sendMessageEmbeds(embed.build()).queue();
+        Channels.MEMBER_LOG.sendMessageEmbeds(embed.build()).queue();
     }
 
     /* ---------------- HELPERS ---------------- */
@@ -196,7 +196,7 @@ public class Logging extends ListenerAdapter {
                 .addField("New", event.getNewNickname() == null ? "None" : event.getNewNickname(), true)
                 .setFooter(event.getUser().getId(), event.getUser().getEffectiveAvatarUrl());
 
-        Utilities.MEMBER_LOG_CHANNEL_ID.sendMessageEmbeds(embed.build()).queue();
+        Channels.MEMBER_LOG.sendMessageEmbeds(embed.build()).queue();
     }
 
     private void preloadMessages(TextChannel channel, Map<Long, Message> cache) {
@@ -223,7 +223,7 @@ public class Logging extends ListenerAdapter {
         }
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                .thenAccept(v -> Utilities.MESSAGES_LOG_CHANNEL
+                .thenAccept(v -> Channels.MESSAGES_LOG
                         .sendMessageEmbeds(embed.build())
                         .addFiles(futures.stream().map(CompletableFuture::join).toList())
                         .queue());
@@ -234,7 +234,7 @@ public class Logging extends ListenerAdapter {
             File f = File.createTempFile("edit-", ".txt");
             Files.writeString(f.toPath(), "OLD:\n" + oldC + "\n\nNEW:\n" + newC);
             embed.setDescription("Content too long, see attachment.");
-            Utilities.MESSAGES_LOG_CHANNEL
+            Channels.MESSAGES_LOG
                     .sendFiles(FileUpload.fromData(f))
                     .queue();
         } catch (IOException ignored) {
@@ -248,7 +248,7 @@ public class Logging extends ListenerAdapter {
 
             embed.setDescription("Content too long, see attachment.");
 
-            Utilities.MESSAGES_LOG_CHANNEL
+            Channels.MESSAGES_LOG
                     .sendMessageEmbeds(embed.build())
                     .addFiles(FileUpload.fromData(f))
                     .queue();
@@ -257,7 +257,7 @@ public class Logging extends ListenerAdapter {
     }
 
     private void logRoles(Member member, List<Role> roles, String title, Color color) {
-        if (Utilities.MEMBER_LOG_CHANNEL_ID == null || roles.isEmpty()) return;
+        if (Channels.MEMBER_LOG == null || roles.isEmpty()) return;
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(title)
@@ -265,18 +265,18 @@ public class Logging extends ListenerAdapter {
                 .setDescription(member.getAsMention());
 
         roles.forEach(r -> embed.appendDescription("\n• " + r.getAsMention()));
-        Utilities.MEMBER_LOG_CHANNEL_ID.sendMessageEmbeds(embed.build()).queue();
+        Channels.MEMBER_LOG.sendMessageEmbeds(embed.build()).queue();
     }
 
     private void logAvatar(String title, User user) {
-        if (Utilities.MEMBER_LOG_CHANNEL_ID == null) return;
+        if (Channels.MEMBER_LOG == null) return;
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(title)
                 .setImage(user.getEffectiveAvatarUrl())
                 .setFooter(user.getId(), user.getEffectiveAvatarUrl());
 
-        Utilities.MEMBER_LOG_CHANNEL_ID.sendMessageEmbeds(embed.build()).queue();
+        Channels.MEMBER_LOG.sendMessageEmbeds(embed.build()).queue();
     }
 
 

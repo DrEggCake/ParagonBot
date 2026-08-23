@@ -1,7 +1,6 @@
 package com.dreggcake.src.Moderation.OtherModeration;
 
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -15,6 +14,8 @@ import java.awt.*;
 import java.util.List;
 
 import static com.dreggcake.src.Main.jda;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class UnbanForce implements ICommand {
     @Override
@@ -70,7 +71,7 @@ public class UnbanForce implements ICommand {
                     event.replyEmbeds(embed.build()).queue();
 
                     // Log
-                    Utilities.PUNISHMENT_LOG_CHANNEL_ID.sendMessageEmbeds(embed.build()).queue();
+                    Channels.PUNISHMENT_LOG.sendMessageEmbeds(embed.build()).queue();
                 }
                 ,
                 error -> event.reply("❌ Failed to unban user. They may not be banned or the ID is invalid.").setEphemeral(true).queue()
@@ -100,7 +101,7 @@ public class UnbanForce implements ICommand {
         if (executer.getRoles().isEmpty() && !executer.isOwner()) {
             return false;
         }
-        if (!(executer.getRoles().contains(Utilities.SR_MOD_ROLE) || executer.getRoles().stream().anyMatch(role -> role.equals(Utilities.SR_MOD_ROLE) || role.getPosition() >= Utilities.SR_MOD_ROLE.getPosition()))) {
+        if (!(executer.getRoles().contains(Roles.SR_MOD) || executer.getRoles().stream().anyMatch(role -> role.equals(Roles.SR_MOD) || role.getPosition() >= Roles.SR_MOD.getPosition()))) {
             return false;
         } else {
             return true;

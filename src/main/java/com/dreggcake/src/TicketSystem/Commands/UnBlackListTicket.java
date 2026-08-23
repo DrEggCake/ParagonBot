@@ -3,7 +3,6 @@ package com.dreggcake.src.TicketSystem.Commands;
 import com.dreggcake.src.Moderation.ModUtility;
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -15,6 +14,8 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class UnBlackListTicket implements ICommand {
 
@@ -47,9 +48,9 @@ public class UnBlackListTicket implements ICommand {
         User user = event.getOption("user").getAsUser();
         String reason = event.getOption("reason").getAsString();
 
-        if (Utilities.SR_MOD_ROLE == null
-                || Utilities.TICKET_BLACKLIST_ROLE == null
-                || Utilities.PUNISHMENT_LOG_CHANNEL_ID == null) {
+        if (Roles.SR_MOD == null
+                || Roles.TICKET_BLACKLIST == null
+                || Channels.PUNISHMENT_LOG == null) {
 
             event.reply("Roles or mod-log channel are misconfigured")
                     .setEphemeral(true).queue();
@@ -89,7 +90,7 @@ public class UnBlackListTicket implements ICommand {
             );
 
             // Remove role
-            guild.removeRoleFromMember(user, Utilities.TICKET_BLACKLIST_ROLE).queue(
+            guild.removeRoleFromMember(user, Roles.TICKET_BLACKLIST).queue(
                     success -> {
                         EmbedBuilder embed = new EmbedBuilder();
                         embed.setTitle("Ticket Blacklist Edited");
@@ -102,7 +103,7 @@ public class UnBlackListTicket implements ICommand {
                         embed.setColor(Color.CYAN);
 
                         // Log + reply
-                        Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                        Channels.PUNISHMENT_LOG
                                 .sendMessageEmbeds(embed.build())
                                 .queue();
 

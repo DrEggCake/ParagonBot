@@ -1,7 +1,6 @@
 package com.dreggcake.src.TicketSystem.Listeners;
 
 import com.dreggcake.src.TicketSystem.TicketButton;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
@@ -9,6 +8,7 @@ import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import com.dreggcake.src.Utility.Roles;
 
 public class TicketClaimListener extends ListenerAdapter {
 
@@ -20,7 +20,7 @@ public class TicketClaimListener extends ListenerAdapter {
         Member member = event.getMember();
         if (member == null) return;
 
-        if (!member.getRoles().contains(Utilities.STAFF_ROLE) &&
+        if (!member.getRoles().contains(Roles.STAFF) &&
                 !member.hasPermission(Permission.ADMINISTRATOR)) return;
 
         var message = event.getMessage();

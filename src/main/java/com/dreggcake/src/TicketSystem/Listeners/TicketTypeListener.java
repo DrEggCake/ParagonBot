@@ -2,10 +2,10 @@ package com.dreggcake.src.TicketSystem.Listeners;
 
 import com.dreggcake.src.TicketSystem.TicketDAO;
 import com.dreggcake.src.TicketSystem.TicketType;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import com.dreggcake.src.Utility.Roles;
 
 public class TicketTypeListener extends ListenerAdapter {
 
@@ -31,7 +31,7 @@ public class TicketTypeListener extends ListenerAdapter {
 
         event.getMessage().delete().queue();
 
-        event.getChannel().sendMessage(Utilities.STAFF_ROLE.getAsMention()).queue(
+        event.getChannel().sendMessage(Roles.STAFF.getAsMention()).queue(
                 message -> {
                     message.delete().queue();
                 }

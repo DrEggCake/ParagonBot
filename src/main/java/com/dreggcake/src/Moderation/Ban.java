@@ -3,7 +3,6 @@ package com.dreggcake.src.Moderation;
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -18,6 +17,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import com.dreggcake.src.Utility.Channels;
 
 public class Ban implements ICommand {
 
@@ -144,7 +144,7 @@ public class Ban implements ICommand {
             }
 
             event.replyEmbeds(replyEmbed.build()).queue(msg ->
-                    Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                    Channels.PUNISHMENT_LOG
                             .sendMessageEmbeds(replyEmbed.build()).queue()
             );
 

@@ -1,7 +1,6 @@
 package com.dreggcake.src.Embeds;
 
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -10,6 +9,8 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.awt.*;
 import java.util.List;
+import com.dreggcake.src.Utility.Roles;
+import com.dreggcake.src.Utility.RuntimeValues;
 
 public class InfoEmbedCommand implements ICommand {
 
@@ -41,7 +42,7 @@ public class InfoEmbedCommand implements ICommand {
             return;
         }
 
-        Role managerRole = event.getGuild().getRoleById(Utilities.MANAGER_ROLE.getId());
+        Role managerRole = event.getGuild().getRoleById(Roles.MANAGER.getId());
         if (managerRole == null) {
             event.getHook()
                     .sendMessage("Admin role not found. Please check configuration.")
@@ -73,7 +74,7 @@ public class InfoEmbedCommand implements ICommand {
 
                         "## :link: Important Links\n" +
                         "- [Apply for Staff](https://docs.google.com/forms/d/e/1FAIpQLSdrt6O0-xu-M0t6j7XjCY2QbORAVmViJmN816uUWJXpGA3Bqg/viewform)\n" +
-                        "- [Server Store](" + Utilities.STORE + ")\n" +
+                        "- [Server Store](" + RuntimeValues.STORE + ")\n" +
                         "- [Server Rules](https://docs.google.com/document/d/1dHlB99Z8CH49B0DKjXySQEfV8fmOERc8hoqpTCuhuJg/edit?usp=sharing)\n" +
 
                         "## :star2: Vote Links\n" +

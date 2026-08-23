@@ -1,18 +1,18 @@
 package com.dreggcake.src.Counting;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.io.File;
 import java.time.Instant;
+import com.dreggcake.src.Utility.GuildContext;
 
 public class CountingDatabaseBackup extends ListenerAdapter implements Runnable {
     String filePath = "counting.db";
 
 
     public void run() {
-        Utilities.DREGGCAKE.openPrivateChannel().queue((channel) -> {
+        GuildContext.DREGGCAKE.openPrivateChannel().queue((channel) -> {
             File databaseFile = new File(filePath);
 
             if (databaseFile.exists()) {

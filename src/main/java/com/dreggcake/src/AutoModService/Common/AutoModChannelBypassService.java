@@ -1,17 +1,17 @@
 package com.dreggcake.src.AutoModService.Common;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 import java.util.Set;
+import com.dreggcake.src.Utility.Channels;
 
 public final class AutoModChannelBypassService {
 
     // Channels where AutoMod should NOT apply
     // e.g. counting, spam, bot-commands
     private static final Set<Long> BYPASS_CHANNEL_IDS = Set.of(
-            Utilities.COUNTING_CHANNEL.getIdLong(),
-            Utilities.SPAM_CHANNEL.getIdLong()
+            Channels.COUNTING.getIdLong(),
+            Channels.SPAM.getIdLong()
     );
 
     private AutoModChannelBypassService() {

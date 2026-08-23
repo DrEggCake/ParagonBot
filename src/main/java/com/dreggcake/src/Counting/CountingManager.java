@@ -24,6 +24,10 @@ public class CountingManager {
         STATES.put(channelId, state);
     }
 
+    public static void restore() {
+        new CountingDAO().loadAll().forEach(CountingManager::enable);
+    }
+
     public static void disable(long channelId) {
         STATES.remove(channelId);
     }

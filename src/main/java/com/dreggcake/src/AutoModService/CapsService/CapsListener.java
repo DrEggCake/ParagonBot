@@ -3,7 +3,6 @@ package com.dreggcake.src.AutoModService.CapsService;
 import com.dreggcake.src.AutoModService.Common.AutoModBypassService;
 import com.dreggcake.src.AutoModService.Common.AutoModCategoryBypassService;
 import com.dreggcake.src.AutoModService.Common.AutoModChannelBypassService;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,6 +16,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import com.dreggcake.src.Utility.Channels;
 
 public class CapsListener extends ListenerAdapter {
 
@@ -131,7 +131,7 @@ public class CapsListener extends ListenerAdapter {
                 .setColor(Color.ORANGE)
                 .setAuthor(member.getUser().getName() + " has been warned.", null, member.getEffectiveAvatarUrl())
                 .addField("Reason:", "Excessive use of caps", true)
-                .addField("Support:", "Think this is wrong? Let us know at " + Utilities.SUPPORT_CHANNEL.getAsMention(), false)
+                .addField("Support:", "Think this is wrong? Let us know at " + Channels.SUPPORT.getAsMention(), false)
                 .setFooter("ParagonMC Auto Moderation")
                 .setTimestamp(Instant.now());
 

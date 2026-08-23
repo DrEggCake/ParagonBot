@@ -1,7 +1,6 @@
 package com.dreggcake.src.AutoModService.SwearService;
 
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -17,6 +16,8 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public final class SwearPunishmentService {
 
@@ -53,14 +54,14 @@ public final class SwearPunishmentService {
         addMutedRole(member);
         insertMuteIntoDatabase(Main.jda,member, MUTE_DURATION_MS);
         sendMuteEmbed(message.getChannel().asTextChannel(), member);
-        sendMuteEmbed(Utilities.PUNISHMENT_LOG_CHANNEL_ID,member);
+        sendMuteEmbed(Channels.PUNISHMENT_LOG,member);
     }
 
     // ================= ACTIONS =================
 
     private static void addMutedRole(Member member) {
         Optional<Role> mutedRole = member.getGuild().getRoles().stream()
-                .filter(r -> r.getId().equals(Utilities.MUTED_ROLE.getId()))
+                .filter(r -> r.getId().equals(Roles.MUTED.getId()))
                 .findFirst();
 
         mutedRole.ifPresent(role -> member.getGuild().addRoleToMember(member, role).queue());
@@ -103,7 +104,7 @@ public final class SwearPunishmentService {
                 .setAuthor(member.getUser().getName()+" has been Muted", null, member.getEffectiveAvatarUrl())
                 .addField("Reason", "Repeated swearing", false)
                 .addField("Duration", "1 hour", false)
-                .addField("Appeal","Think this was unfair? Appeal at "+Utilities.SUPPORT_CHANNEL.getAsMention(),false)
+                .addField("Appeal","Think this was unfair? Appeal at "+Channels.SUPPORT.getAsMention(),false)
                 .setFooter("ParagonMC Auto Moderation")
                 .setTimestamp(Instant.now());
 

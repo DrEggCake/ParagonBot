@@ -1,7 +1,6 @@
 package com.dreggcake.src.TicketSystem;
 
 import com.dreggcake.src.Database.Databases;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -10,6 +9,9 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.GuildContext;
+import com.dreggcake.src.Utility.Roles;
 
 public class autoUnblacklistTicket extends ListenerAdapter implements Runnable {
 
@@ -38,12 +40,12 @@ public class autoUnblacklistTicket extends ListenerAdapter implements Runnable {
 
             for (BlacklistRecord record : records) {
 
-                if (Utilities.GUILD == null) continue;
+                if (GuildContext.GUILD == null) continue;
 
-                Member member = Utilities.GUILD.getMemberById(record.userId);
+                Member member = GuildContext.GUILD.getMemberById(record.userId);
 
                 if (member != null) {
-                    Utilities.GUILD.removeRoleFromMember(member, Utilities.TICKET_BLACKLIST_ROLE)
+                    GuildContext.GUILD.removeRoleFromMember(member, Roles.TICKET_BLACKLIST)
                             .queue(success -> {
 
                                 EmbedBuilder embed = new EmbedBuilder();
@@ -54,7 +56,7 @@ public class autoUnblacklistTicket extends ListenerAdapter implements Runnable {
                                 embed.setColor(Color.BLUE);
                                 embed.setThumbnail(member.getEffectiveAvatarUrl());
 
-                                Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                                Channels.PUNISHMENT_LOG
                                         .sendMessageEmbeds(embed.build())
                                         .queue();
                             });

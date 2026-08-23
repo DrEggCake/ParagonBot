@@ -3,7 +3,6 @@ package com.dreggcake.src.TicketSystem.Commands;
 import com.dreggcake.src.Moderation.ModUtility;
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -17,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class BlackListTicket implements ICommand {
 
@@ -139,9 +140,9 @@ public class BlackListTicket implements ICommand {
             replyEmbed.setThumbnail(blacklisted.getEffectiveAvatarUrl());
 
             // Apply role + send message
-            event.getGuild().addRoleToMember(blacklisted, Utilities.TICKET_BLACKLIST_ROLE)
+            event.getGuild().addRoleToMember(blacklisted, Roles.TICKET_BLACKLIST)
                     .queue(success -> event.replyEmbeds(replyEmbed.build()).queue(msg ->
-                            Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                            Channels.PUNISHMENT_LOG
                                     .sendMessageEmbeds(replyEmbed.build()).queue()
                     ));
 

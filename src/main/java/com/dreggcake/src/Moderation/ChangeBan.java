@@ -2,7 +2,6 @@ package com.dreggcake.src.Moderation;
 
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -13,6 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
 
 public class ChangeBan implements ICommand {
 
@@ -92,7 +92,7 @@ public class ChangeBan implements ICommand {
 
                         event.replyEmbeds(embed.build()).queue();
 
-                        Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                        Channels.PUNISHMENT_LOG
                                 .sendMessageEmbeds(embed.build())
                                 .queue();
                     },
@@ -104,7 +104,7 @@ public class ChangeBan implements ICommand {
 
                         event.replyEmbeds(embed.build()).queue();
 
-                        Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                        Channels.PUNISHMENT_LOG
                                 .sendMessageEmbeds(embed.build())
                                 .queue();
                     }

@@ -2,7 +2,6 @@ package com.dreggcake.src.Moderation;
 
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.ICommand;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -14,6 +13,8 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class Unmute implements ICommand {
 
@@ -80,7 +81,7 @@ public class Unmute implements ICommand {
             }
 
             // Remove role
-            event.getGuild().removeRoleFromMember(muted, Utilities.MUTED_ROLE).queue();
+            event.getGuild().removeRoleFromMember(muted, Roles.MUTED).queue();
 
             // Delete from DB
             Databases.getMainDatabase().update(
@@ -112,7 +113,7 @@ public class Unmute implements ICommand {
 
             // Reply + log
             event.replyEmbeds(replyEmbed.build()).queue(msg ->
-                    Utilities.PUNISHMENT_LOG_CHANNEL_ID
+                    Channels.PUNISHMENT_LOG
                             .sendMessageEmbeds(replyEmbed.build()).queue()
             );
 

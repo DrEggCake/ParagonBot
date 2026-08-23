@@ -1,17 +1,17 @@
 package com.dreggcake.src.StaffList;
 
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
 
 public class StaffListRefresh implements Runnable {
     @Override
     public void run() {
-        TextChannel staffListChannel = Utilities.STAFF_LIST_CHANNEL;
+        TextChannel staffListChannel = Channels.STAFF_LIST;
         StaffListBuild staffListBuild = new StaffListBuild();
 
         long selfId = Main.jda.getSelfUser().getIdLong();

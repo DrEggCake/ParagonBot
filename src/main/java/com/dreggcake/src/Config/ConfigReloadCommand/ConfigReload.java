@@ -1,10 +1,10 @@
 package com.dreggcake.src.Config.ConfigReloadCommand;
 
 import com.dreggcake.src.Config.Config;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import com.dreggcake.src.Utility.RuntimeValues;
 
 public class ConfigReload extends ListenerAdapter {
     @Override
@@ -19,7 +19,7 @@ public class ConfigReload extends ListenerAdapter {
             }
             try {
                 Config.reload();
-                Utilities.loadRuntimeValues();
+                RuntimeValues.reload();
                 event.getMessage().reply("Config reloaded successfully!").queue();
             } catch (Exception e) {
                 e.printStackTrace();

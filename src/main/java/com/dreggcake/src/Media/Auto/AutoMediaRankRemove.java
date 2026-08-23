@@ -2,7 +2,6 @@ package com.dreggcake.src.Media.Auto;
 
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -12,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class AutoMediaRankRemove implements Runnable {
 
@@ -42,11 +43,11 @@ public class AutoMediaRankRemove implements Runnable {
 
                 if (member != null) {
                     // remove roles
-                    guild.removeRoleFromMember(member, Utilities.CONTENT_CREATOR_1_ROLE).queue();
-                    guild.removeRoleFromMember(member, Utilities.CONTENT_CREATOR_2_ROLE).queue();
-                    guild.removeRoleFromMember(member, Utilities.CONTENT_CREATOR_3_ROLE).queue();
-                    guild.removeRoleFromMember(member, Utilities.CONTENT_CREATOR_4_ROLE).queue();
-                    guild.removeRoleFromMember(member, Utilities.PARTNER_ROLE).queue();
+                    guild.removeRoleFromMember(member, Roles.CONTENT_CREATOR_1).queue();
+                    guild.removeRoleFromMember(member, Roles.CONTENT_CREATOR_2).queue();
+                    guild.removeRoleFromMember(member, Roles.CONTENT_CREATOR_3).queue();
+                    guild.removeRoleFromMember(member, Roles.CONTENT_CREATOR_4).queue();
+                    guild.removeRoleFromMember(member, Roles.PARTNER).queue();
 
                     // ✅ log per user
                     EmbedBuilder embed = new EmbedBuilder();
@@ -54,7 +55,7 @@ public class AutoMediaRankRemove implements Runnable {
                     embed.addField("Target", member.getAsMention(), true);
                     embed.setColor(Color.BLUE);
 
-                    Utilities.MEDIA_LOG_CHANNEL
+                    Channels.MEDIA_LOG
                             .sendMessageEmbeds(embed.build())
                             .queue();
                 }

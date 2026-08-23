@@ -1,6 +1,5 @@
 package com.dreggcake.src.TicketSystem;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
@@ -12,6 +11,7 @@ import java.awt.*;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import com.dreggcake.src.Utility.Roles;
 
 public enum TicketType {
     TICKET_TYPE("ticket-type") {
@@ -126,7 +126,7 @@ public enum TicketType {
             putMemberPermission(channel, member);
 
             channel.getManager().putPermissionOverride(
-                    Utilities.STAFF_ROLE, null, EnumSet.of(Permission.VIEW_CHANNEL)
+                    Roles.STAFF, null, EnumSet.of(Permission.VIEW_CHANNEL)
             ).queue();
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("Store Support");
@@ -154,11 +154,11 @@ public enum TicketType {
             putMemberPermission(channel, member);
 
             channel.getManager().putPermissionOverride(
-                    Utilities.STAFF_ROLE, null, EnumSet.of(Permission.VIEW_CHANNEL)
+                    Roles.STAFF, null, EnumSet.of(Permission.VIEW_CHANNEL)
             ).queue();
 
             channel.getManager().putPermissionOverride(
-                    Utilities.SR_ADMIN_ROLE, EnumSet.of(Permission.VIEW_CHANNEL), null
+                    Roles.SR_ADMIN, EnumSet.of(Permission.VIEW_CHANNEL), null
             ).queue();
 
             EmbedBuilder embed = new EmbedBuilder();

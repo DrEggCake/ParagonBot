@@ -1,13 +1,13 @@
 package com.dreggcake.src.Database;
 
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.io.File;
 import java.time.Instant;
+import com.dreggcake.src.Utility.GuildContext;
 
 public class DatabaseBackup extends ListenerAdapter implements Runnable {
     private final JDA jda = Main.jda;
@@ -15,7 +15,7 @@ public class DatabaseBackup extends ListenerAdapter implements Runnable {
 
 
     public void run() {
-        Utilities.DREGGCAKE.openPrivateChannel().queue((channel) -> {
+        GuildContext.DREGGCAKE.openPrivateChannel().queue((channel) -> {
             File databaseFile = new File(filePath);
 
             if (databaseFile.exists()) {

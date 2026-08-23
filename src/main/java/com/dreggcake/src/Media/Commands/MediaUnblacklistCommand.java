@@ -3,7 +3,6 @@ package com.dreggcake.src.Media.Commands;
 import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Media.Logic.MediaDAO;
 import com.dreggcake.src.Media.MediaPermissions;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -13,6 +12,8 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.awt.*;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class MediaUnblacklistCommand implements ICommand
 {
@@ -48,7 +49,7 @@ public class MediaUnblacklistCommand implements ICommand
         Member target = event.getOption("user").getAsMember();
         String reason = event.getOption("reason").getAsString();
 
-        if (target.getRoles().contains(Utilities.STAFF_ROLE) || target.isOwner() || target.hasPermission(Permission.ADMINISTRATOR)) {
+        if (target.getRoles().contains(Roles.STAFF) || target.isOwner() || target.hasPermission(Permission.ADMINISTRATOR)) {
             event.reply("what do you think you are doing weirdo?").setEphemeral(true).queue();
             return;
         }
@@ -67,6 +68,6 @@ public class MediaUnblacklistCommand implements ICommand
         embed.addField("Target", target.getAsMention(), true);
         embed.addField("Reason", reason, false);
         embed.setColor(Color.YELLOW);
-        Utilities.MEDIA_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
+        Channels.MEDIA_LOG.sendMessageEmbeds(embed.build()).queue();
     }
 }

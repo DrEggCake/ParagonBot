@@ -1,7 +1,6 @@
 package com.dreggcake.src.TicketSystem.Listeners;
 
 import com.dreggcake.src.TicketSystem.TicketDAO;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -21,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.Roles;
 
 public class TicketCloseListener extends ListenerAdapter {
 
@@ -68,7 +69,7 @@ public class TicketCloseListener extends ListenerAdapter {
             File transcriptFile = File.createTempFile("transcript", ".txt");
             Files.writeString(transcriptFile.toPath(), transcript);
 
-            if (Utilities.TICKET_LOG_CHANNEL == null) {
+            if (Channels.TICKET_LOG == null) {
                 channel.getGuild().getOwner().getUser().openPrivateChannel().queue(
                         pc -> {
                             pc.sendMessage("Log channel not Found! Unable to send transcript. Details below\n" +
@@ -89,7 +90,7 @@ public class TicketCloseListener extends ListenerAdapter {
                     .addField("Created on:", TimeFormat.DATE_TIME_LONG.format(channel.getTimeCreated().toInstant()), false)
                     .addField("Closed on:", TimeFormat.DATE_TIME_LONG.format(timestamp.toInstant()), false);
 
-            Utilities.TICKET_LOG_CHANNEL
+            Channels.TICKET_LOG
                     .sendMessageEmbeds(embed.build())
                     .addFiles(FileUpload.fromData(transcriptFile, "transcript-" + channel.getName() + ".txt"))
                     .queue();
@@ -114,7 +115,7 @@ public class TicketCloseListener extends ListenerAdapter {
 
             Member member = event.getMember();
 
-            boolean isStaff = member.getRoles().contains(Utilities.STAFF_ROLE);
+            boolean isStaff = member.getRoles().contains(Roles.STAFF);
             boolean isAdmin = member.hasPermission(Permission.ADMINISTRATOR);
 
             if (!(isStaff || isAdmin)) return;

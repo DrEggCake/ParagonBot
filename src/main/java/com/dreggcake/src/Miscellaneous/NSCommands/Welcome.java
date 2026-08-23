@@ -1,6 +1,5 @@
 package com.dreggcake.src.Miscellaneous.NSCommands;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
@@ -13,6 +12,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
 import java.time.Instant;
+import com.dreggcake.src.Utility.Channels;
 
 public class Welcome extends ListenerAdapter {
 
@@ -22,7 +22,7 @@ public class Welcome extends ListenerAdapter {
 
         if (guild == null || member == null) return;
 
-        TextChannel welcomeChannel = Utilities.WELCOME_CHANNEL;
+        TextChannel welcomeChannel = Channels.WELCOME;
         if (welcomeChannel == null) return;
 
         long joinTimestamp = member.getTimeJoined().toEpochSecond();

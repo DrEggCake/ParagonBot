@@ -1,7 +1,6 @@
 package com.dreggcake.src.InviteTracker;
 
 import com.dreggcake.src.Database.Databases;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Member;
@@ -16,6 +15,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import com.dreggcake.src.Utility.Channels;
 
 public class InviteTracker extends ListenerAdapter {
 
@@ -74,7 +74,7 @@ public class InviteTracker extends ListenerAdapter {
                 }
             }
 
-            TextChannel log = guild.getTextChannelById(Utilities.INVITE_LOG_CHANNEL.getId());
+            TextChannel log = guild.getTextChannelById(Channels.INVITE_LOG.getId());
             if (log == null) return;
 
             if (used != null && used.getInviter() != null) {
@@ -101,7 +101,7 @@ public class InviteTracker extends ListenerAdapter {
     public void onGuildInviteCreate(GuildInviteCreateEvent event) {
         cacheInvites();
         System.out.println("INVITE CREATED: " + event.getCode());
-        TextChannel log = event.getGuild().getTextChannelById(Utilities.INVITE_LOG_CHANNEL.getId());
+        TextChannel log = event.getGuild().getTextChannelById(Channels.INVITE_LOG.getId());
         if (log == null) return;
 
         Invite invite = event.getInvite();
@@ -120,7 +120,7 @@ public class InviteTracker extends ListenerAdapter {
         cacheInvites();
         System.out.println("INVITE DELETED: " + event.getCode());
 
-        TextChannel log = event.getGuild().getTextChannelById(Utilities.INVITE_LOG_CHANNEL.getId());
+        TextChannel log = event.getGuild().getTextChannelById(Channels.INVITE_LOG.getId());
         if (log == null) return;
 
         log.sendMessage(

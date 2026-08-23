@@ -36,20 +36,6 @@ public class TicketDAO {
         }
     }
 
-    public static String retrieveTicketId(long ticketId) {
-
-        try {
-            return Databases.getMainDatabase().query(
-                    "SELECT ticketid FROM tickets WHERE ticketid = ?",
-                    rs -> rs.next() ? rs.getString("ticketid") : null,
-                    ticketId
-            );
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public static String retrieveTicketMemberId(long ticketId) {
         try {
             return Databases.getMainDatabase().query(
@@ -60,6 +46,19 @@ public class TicketDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static boolean isTicket(long channelId) {
+        try {
+            return Databases.getMainDatabase().query(
+                    "SELECT 1 FROM tickets WHERE ticketid = ?",
+                    rs -> rs.next(),
+                    channelId
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

@@ -3,7 +3,6 @@ package com.dreggcake.src.Media.Commands;
 import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Media.Logic.MediaDAO;
 import com.dreggcake.src.Media.MediaPermissions;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -13,6 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.awt.*;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
 
 public class MediaBlacklistCommand implements ICommand {
     @Override
@@ -65,6 +65,6 @@ public class MediaBlacklistCommand implements ICommand {
         embed.addField("Target", target.getAsMention(), true);
         embed.addField("Reason", reason, false);
         embed.setColor(Color.RED);
-        Utilities.MEDIA_LOG_CHANNEL.sendMessageEmbeds(embed.build()).queue();
+        Channels.MEDIA_LOG.sendMessageEmbeds(embed.build()).queue();
     }
 }

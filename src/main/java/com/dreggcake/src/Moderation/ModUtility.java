@@ -1,71 +1,79 @@
 package com.dreggcake.src.Moderation;
 
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.entities.Role;
 
 import java.util.List;
+import com.dreggcake.src.Utility.Roles;
 
 public class ModUtility{
 
     private static final List<Role> muteModStaff = List.of(
-            Utilities.OWNER_ROLE,
-            Utilities.DEV_ROLE,
-            Utilities.MANAGER_ROLE,
-            Utilities.SR_ADMIN_ROLE,
-            Utilities.JR_ADMIN_ROLE,
-            Utilities.SR_MOD_ROLE,
-            Utilities.JR_MOD_ROLE,
-            Utilities.SUPPORT_ROLE
+            Roles.OWNER,
+            Roles.DEV,
+            Roles.MANAGER,
+            Roles.SR_ADMIN,
+            Roles.JR_ADMIN,
+            Roles.SR_MOD,
+            Roles.JR_MOD,
+            Roles.SUPPORT
     );
 
     private static final List<Role> banModStaff = List.of(
-            Utilities.OWNER_ROLE,
-            Utilities.DEV_ROLE,
-            Utilities.MANAGER_ROLE,
-            Utilities.SR_ADMIN_ROLE,
-            Utilities.JR_ADMIN_ROLE,
-            Utilities.SR_MOD_ROLE,
-            Utilities.JR_MOD_ROLE
+            Roles.OWNER,
+            Roles.DEV,
+            Roles.MANAGER,
+            Roles.SR_ADMIN,
+            Roles.JR_ADMIN,
+            Roles.SR_MOD,
+            Roles.JR_MOD
     );
     private static final List<Role> blacklistTicketStaff= List.of(
-            Utilities.OWNER_ROLE,
-            Utilities.DEV_ROLE,
-            Utilities.MANAGER_ROLE,
-            Utilities.SR_ADMIN_ROLE,
-            Utilities.JR_ADMIN_ROLE,
-            Utilities.SR_MOD_ROLE
+            Roles.OWNER,
+            Roles.DEV,
+            Roles.MANAGER,
+            Roles.SR_ADMIN,
+            Roles.JR_ADMIN,
+            Roles.SR_MOD
     );
     private static final List<Role> changeBanStaff= List.of(
-            Utilities.OWNER_ROLE,
-            Utilities.DEV_ROLE,
-            Utilities.MANAGER_ROLE,
-            Utilities.SR_ADMIN_ROLE,
-            Utilities.JR_ADMIN_ROLE,
-            Utilities.SR_MOD_ROLE
+            Roles.OWNER,
+            Roles.DEV,
+            Roles.MANAGER,
+            Roles.SR_ADMIN,
+            Roles.JR_ADMIN,
+            Roles.SR_MOD
     );
     private static final List<Role> unmuteModStaff= List.of(
-            Utilities.OWNER_ROLE,
-            Utilities.DEV_ROLE,
-            Utilities.MANAGER_ROLE,
-            Utilities.SR_ADMIN_ROLE,
-            Utilities.JR_ADMIN_ROLE,
-            Utilities.SR_MOD_ROLE
+            Roles.OWNER,
+            Roles.DEV,
+            Roles.MANAGER,
+            Roles.SR_ADMIN,
+            Roles.JR_ADMIN,
+            Roles.SR_MOD
     );
     private static final List<Role> unbanModStaff= List.of(
-            Utilities.OWNER_ROLE,
-            Utilities.DEV_ROLE,
-            Utilities.MANAGER_ROLE,
-            Utilities.SR_ADMIN_ROLE,
-            Utilities.JR_ADMIN_ROLE,
-            Utilities.SR_MOD_ROLE
+            Roles.OWNER,
+            Roles.DEV,
+            Roles.MANAGER,
+            Roles.SR_ADMIN,
+            Roles.JR_ADMIN,
+            Roles.SR_MOD
     );
     private static final List<Role> unblacklistTicketStaff= List.of(
-            Utilities.OWNER_ROLE,
-            Utilities.DEV_ROLE,
-            Utilities.MANAGER_ROLE,
-            Utilities.SR_ADMIN_ROLE,
-            Utilities.JR_ADMIN_ROLE,
-            Utilities.SR_MOD_ROLE
+            Roles.OWNER,
+            Roles.DEV,
+            Roles.MANAGER,
+            Roles.SR_ADMIN,
+            Roles.JR_ADMIN,
+            Roles.SR_MOD
+    );
+    private static final List<Role> renameTicketStaff= List.of(
+            Roles.OWNER,
+            Roles.DEV,
+            Roles.MANAGER,
+            Roles.SR_ADMIN,
+            Roles.JR_ADMIN,
+            Roles.SR_MOD
     );
 
     public static List<Role> getMuteModStaff() {
@@ -94,5 +102,9 @@ public class ModUtility{
 
     public static List<Role> getUnblacklistTicketStaff() {
         return unblacklistTicketStaff;
+    }
+
+    public static List<Role> getRenameTicketStaff() {
+        return renameTicketStaff;
     }
 }

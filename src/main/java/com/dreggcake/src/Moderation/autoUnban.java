@@ -2,7 +2,6 @@ package com.dreggcake.src.Moderation;
 
 import com.dreggcake.src.Database.Databases;
 import com.dreggcake.src.Main;
-import com.dreggcake.src.Utility.Utilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,6 +10,8 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.dreggcake.src.Utility.Channels;
+import com.dreggcake.src.Utility.GuildContext;
 
 public class autoUnban extends ListenerAdapter implements Runnable {
 
@@ -47,13 +48,13 @@ public class autoUnban extends ListenerAdapter implements Runnable {
                 }
 
                 if (banExpiry <= currentTime) {
-                    if (Utilities.GUILD == null) continue;
+                    if (GuildContext.GUILD == null) continue;
 
                     // Attempt to retrieve user
                     Main.jda.retrieveUserById(ban.userId).queue(
                             user -> {
                                 // Unban
-                                Utilities.GUILD.unban(user).queue(
+                                GuildContext.GUILD.unban(user).queue(
                                         success -> sendUnbanLog(user, ban.reason),
                                         error -> System.out.println("Failed to unban user " + user.getAsTag())
                                 );
@@ -93,8 +94,8 @@ public class autoUnban extends ListenerAdapter implements Runnable {
         logEmbed.setColor(Color.BLUE);
         logEmbed.setThumbnail(user.getEffectiveAvatarUrl());
 
-        if (Utilities.PUNISHMENT_LOG_CHANNEL_ID != null) {
-            Utilities.PUNISHMENT_LOG_CHANNEL_ID
+        if (Channels.PUNISHMENT_LOG != null) {
+            Channels.PUNISHMENT_LOG
                     .sendMessageEmbeds(logEmbed.build())
                     .queue();
         }
