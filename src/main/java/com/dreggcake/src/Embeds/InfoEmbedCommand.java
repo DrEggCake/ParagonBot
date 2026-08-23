@@ -2,7 +2,6 @@ package com.dreggcake.src.Embeds;
 
 import com.dreggcake.src.ICommand;
 import com.dreggcake.src.Config.Config;
-import com.dreggcake.src.Miscellaneous.VoteEmbeds;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -107,7 +106,6 @@ public class InfoEmbedCommand implements ICommand {
 
         event.getChannel()
                 .sendMessageEmbeds(embed.build())
-                .addComponents(VoteEmbeds.rows())
                 .queue();
     }
 
