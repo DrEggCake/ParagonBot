@@ -26,7 +26,7 @@ public class PartnerReminder implements Runnable {
         channel.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("🤝 Check out our Partners!")
                 .setDescription(
-                        "Give some love to our amazing partner servers and content creators!\n\n" +
+                        "Give some love to our amazing partner servers and their projects!\n\n" +
                                 "Partner highlights coming soon — stay tuned.")
                 .setColor(new Color(0x9B59B6))
                 .setFooter("Paragon Network Partner Program")

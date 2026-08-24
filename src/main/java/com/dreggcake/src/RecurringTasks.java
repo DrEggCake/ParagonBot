@@ -42,9 +42,10 @@ public final class RecurringTasks {
 
         // Miscellaneous: vote reminder once a day at noon, partner shoutout in the evening (server local time)
         long day = TimeUnit.DAYS.toMillis(1);
+        long twoDay = TimeUnit.DAYS.toMillis(2);
         scheduler.scheduleAtFixedRate(new VoteReminder(),
                 ReminderClock.millisUntil(VoteReminder.REMINDER_HOUR), day, TimeUnit.MILLISECONDS);
         scheduler.scheduleAtFixedRate(new PartnerReminder(),
-                ReminderClock.millisUntil(PartnerReminder.REMINDER_HOUR), day, TimeUnit.MILLISECONDS);
+                ReminderClock.millisUntil(PartnerReminder.REMINDER_HOUR), twoDay, TimeUnit.MILLISECONDS);
     }
 }
