@@ -49,6 +49,9 @@ public class StaffPingGuard extends ListenerAdapter {
 
         if (!(event.getChannel() instanceof TextChannel channel)) return;
 
+        if (event.getMessage().getReferencedMessage() != null)
+            return;
+
         String key = channelId + ":" + member.getId();
         long now = System.currentTimeMillis();
 
