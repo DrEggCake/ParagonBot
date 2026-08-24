@@ -3,6 +3,8 @@ package com.dreggcake.src;
 import com.dreggcake.src.Database.DatabaseBackup;
 import com.dreggcake.src.InviteTracker.InviteTracker;
 import com.dreggcake.src.Media.Auto.AutoMediaRankRemove;
+import com.dreggcake.src.Miscellaneous.PartnerReminder;
+import com.dreggcake.src.Miscellaneous.ReminderClock;
 import com.dreggcake.src.Miscellaneous.VoteReminder;
 import com.dreggcake.src.Moderation.autoUnban;
 import com.dreggcake.src.Moderation.autoUnmute;
@@ -38,8 +40,11 @@ public final class RecurringTasks {
         // TicketSystem.AutoBot: periodic ticket activity scan (state persisted in DB)
         scheduler.scheduleWithFixedDelay(new AutoCloseService(), 1, 10, TimeUnit.MINUTES);
 
-        // Miscellaneous: vote reminder at fixed clock hours (00:00, 06:00, 12:00, ...)
-        long period = TimeUnit.HOURS.toMillis(VoteReminder.INTERVAL_HOURS);
-        scheduler.scheduleAtFixedRate(new VoteReminder(), VoteReminder.initialDelayMillis(), period, TimeUnit.MILLISECONDS);
+        // Miscellaneous: vote reminder once a day at noon, partner shoutout in the evening (server local time)
+        long day = TimeUnit.DAYS.toMillis(1);
+        scheduler.scheduleAtFixedRate(new VoteReminder(),
+                ReminderClock.millisUntil(VoteReminder.REMINDER_HOUR), day, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(new PartnerReminder(),
+                ReminderClock.millisUntil(PartnerReminder.REMINDER_HOUR), day, TimeUnit.MILLISECONDS);
     }
 }

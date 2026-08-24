@@ -2,35 +2,19 @@ package com.dreggcake.src.Miscellaneous;
 
 import com.dreggcake.src.Config.Config;
 import com.dreggcake.src.Utility.GuildContext;
-import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
-import java.time.Duration;
-import java.time.ZonedDateTime;
-
 /**
- * Posts the vote reminder embed into the configured channel at fixed times
- * of day (00:00, 06:00, 12:00, 18:00 ... local server time).
+ * Posts the vote reminder embed once a day at noon (server local time).
  */
 public class VoteReminder implements Runnable {
 
     /* ================= Timings ================= */
 
     /**
-     * Reminder interval in hours; also defines the clock boundaries.
+     * Hour of day the reminder fires.
      */
-    public static final int INTERVAL_HOURS = 6;
-
-    /**
-     * Millis until the next boundary (e.g. next 06:00 from a 02:13 start).
-     */
-    public static long initialDelayMillis() {
-        ZonedDateTime now = ZonedDateTime.now();
-        int periodsPassed = now.getHour() / INTERVAL_HOURS;
-        ZonedDateTime next = now.toLocalDate().atStartOfDay(now.getZone())
-                .plusHours((long) (periodsPassed + 1) * INTERVAL_HOURS);
-        return Math.max(0, Duration.between(now, next).toMillis());
-    }
+    public static final int REMINDER_HOUR = 12;
 
     @Override
     public void run() {
