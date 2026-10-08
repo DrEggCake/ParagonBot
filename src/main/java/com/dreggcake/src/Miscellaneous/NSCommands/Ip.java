@@ -25,7 +25,9 @@ public class Ip extends ListenerAdapter {
     private void sendip(Message message, MessageReceivedEvent event) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle(":video_game: Server IP");
-        embed.setDescription(":desktop: Java: **"+RuntimeValues.IP+"**");
+        embed.setDescription(":desktop: Java: **"+RuntimeValues.IP+"**\n" +
+                ":mobile_phone: Bedrock: **"+RuntimeValues.IP+"**\n" +
+                "Port: __**29032**__");
         embed.setColor(Color.BLUE);
         embed.setFooter("Paragon Network | Auto Response",event.getJDA().getSelfUser().getEffectiveAvatarUrl());
 
