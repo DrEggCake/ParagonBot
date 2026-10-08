@@ -32,6 +32,8 @@ public class LinkListener extends ListenerAdapter {
             "imgur.com",
             "gyazo.com",
             "tenor.com",
+            "klipy.com",
+            "giphy.com",
             "paragonnetwork.us",
             "google.com",
             "duckduckgo.com",
